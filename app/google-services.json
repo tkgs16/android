@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "255759813489",
+    "project_id": "advizors-fd891",
+    "storage_bucket": "advizors-fd891.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255759813489:android:14db6449dcb059ef7a44d0",
+        "android_client_info": {
+          "package_name": "com.example.advizors"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVJ0WgPenBouJKqLZORV4u_NxqbfKZomk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
