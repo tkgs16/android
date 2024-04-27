@@ -42,7 +42,7 @@ android {
 
 dependencies {
     val roomVersion = "2.6.1"
-
+    implementation("androidx.drawerlayout:drawerlayout:1.2.0")
     implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("androidx.core:core-ktx:1.10.1")
