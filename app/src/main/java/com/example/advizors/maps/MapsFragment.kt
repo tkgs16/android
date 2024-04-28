@@ -2,20 +2,28 @@ package com.example.advizors.maps
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.map
+import androidx.navigation.Navigation
 import com.example.advizors.R
+import com.example.advizors.models.note.Note
+import com.example.advizors.models.note.NoteModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QueryDocumentSnapshot
 import java.util.Locale
 
 class MapsFragment : Fragment(), OnMapReadyCallback {
@@ -24,31 +32,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private  lateinit var view: View
     private var searchView: SearchView? = null
     private var mapMarkers: MutableList<Marker?> = ArrayList()
+    lateinit var map: GoogleMap
 
-//    private fun createNoteMarkerBitmap(): Bitmap {
-//        val height = 100
-//        val width = 100
-//        val bitmapdraw = resources.getDrawable(R.drawable.note, null) as BitmapDrawable
-//        val b = bitmapdraw.bitmap
-//        return Bitmap.createScaledBitmap(b, width, height, false)
-//    }
-
-//    private fun addMarkerToMap(document: QueryDocumentSnapshot, googleMap: GoogleMap) {
-//        val note: Note = Note.create(document.getData())
-//        if (note.isDeleted) return
-//        val coordinate = LatLng(note.latitude, note.longitude)
-//        val noteMarkerBitmap = createNoteMarkerBitmap()
-//        val marker = googleMap.addMarker(MarkerOptions().position(coordinate)
-//                .title(note.title))
-//        marker!!.tag = document.id
-//        marker.setIcon(BitmapDescriptorFactory.fromBitmap(noteMarkerBitmap))
-//        googleMap.setOnMarkerClickListener { marker ->
-//            val noteId = marker.tag.toString()
-//            findNavController(view).navigate(MapsFragmentDirections.actionMapToNoteDetailsFragment(noteId))
-//            true
-//        }
-//        mapMarkers.add(marker)
-//    }
 
     fun displaySelectedMarkers(filterString: String) {
         for (mapMarker in mapMarkers) {
@@ -79,59 +64,46 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
+        // adding on query listener for our search view.
+        searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
 
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
+            override fun onQueryTextChange(newText: String): Boolean {
+                displaySelectedMarkers(newText)
+                return false
+            }
+        })
 
-//        // adding on query listener for our search view.
-//        searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String): Boolean {
-//                return false
-//            }
-//
-//            override fun onQueryTextChange(newText: String): Boolean {
-//                displaySelectedMarkers(newText)
-//                return false
-//            }
-//        })
-//        googleMap.setOnMapLongClickListener { latLng: LatLng -> findNavController(view).navigate(MapsFragmentDirections.actionMapToFragmentAddNote(latLng.latitude.toFloat(), latLng.longitude.toFloat())) }
-//        firestore?.collection("Notes")
-//                ?.addSnapshotListener(EventListener { value, e ->
-//                    if (e != null) {
-//                        return@EventListener
-//                    }
-//                    for (doc in value!!) {
-//                        addMarkerToMap(doc, googleMap)
-//                    }
-//                })
-//        firestore?.collection("Notes")?.get()?.addOnCompleteListener { task ->
-//            if (task.isSuccessful) {
-//                for (document in task.result) {
-//                    addMarkerToMap(document, googleMap)
-//                }
-//            } else {
-//                Log.d("Error", "Error getting documents: ", task.exception)
-//            }
-//        }
+//        googleMap.setOnMapLongClickListener { latLng: LatLng -> Navigation.findNavController(view).navigate(MapsFragmentDirections.actionMapToFragmentAddNote(latLng.latitude.toFloat(), latLng.longitude.toFloat())) }
+
+        val notes = NoteModel.instance.getAllNotes()
+        notes.observe(viewLifecycleOwner) { notesList ->
+            notesList.forEach { addMarkerToMap(it, googleMap) }
+        }
+
+
         val israel = LatLng(31.04, 34.8)
         //            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(israel))
+    }
+
+    private fun addMarkerToMap(note: Note, googleMap: GoogleMap) {
+//        val note: Note = Note.fromJSON(document.getData())
+        if (note.isDeleted) return
+        val coordinate = LatLng(note.position.latitude, note.position.longitude)
+//        val noteMarkerBitmap = createNoteMarkerBitmap()
+        val marker = googleMap.addMarker(MarkerOptions().position(coordinate)
+            .title(note.title))
+        marker!!.tag = note.id
+//        marker.setIcon(BitmapDescriptorFactory.fromBitmap(noteMarkerBitmap))
+//        googleMap.setOnMarkerClickListener { marker ->
+//            val noteId = marker.tag.toString()
+//            Navigation.findNavController(view).navigate(MapsFragmentDirections.actionMapToNoteDetailsFragment(noteId))
+//            true
+//        }
+        mapMarkers.add(marker)
     }
 
 
