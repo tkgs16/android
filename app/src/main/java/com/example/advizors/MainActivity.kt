@@ -19,14 +19,10 @@ import com.google.android.gms.location.LocationServices
 
 class MainActivity : AppCompatActivity() {
 
-
-
     private lateinit var drawer: DrawerLayout
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val LOCATION_PERMISSION_REQUEST_CODE = 100
     private lateinit var mapsViewModel: MapsViewModel
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
