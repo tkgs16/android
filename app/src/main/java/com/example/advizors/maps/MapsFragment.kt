@@ -1,15 +1,21 @@
 package com.example.advizors.maps
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.example.advizors.R
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -25,6 +31,59 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private  lateinit var view: View
     private var searchView: SearchView? = null
     private var mapMarkers: MutableList<Marker?> = ArrayList()
+
+//    private fun createNoteMarkerBitmap(): Bitmap {
+//        val height = 100
+//        val width = 100
+//        val bitmapdraw = resources.getDrawable(R.drawable.note, null) as BitmapDrawable
+//        val b = bitmapdraw.bitmap
+//        return Bitmap.createScaledBitmap(b, width, height, false)
+//    }
+
+//    private fun addMarkerToMap(document: QueryDocumentSnapshot, googleMap: GoogleMap) {
+//        val note: Note = Note.create(document.getData())
+//        if (note.isDeleted) return
+//        val coordinate = LatLng(note.latitude, note.longitude)
+//        val noteMarkerBitmap = createNoteMarkerBitmap()
+//        val marker = googleMap.addMarker(MarkerOptions().position(coordinate)
+//                .title(note.title))
+//        marker!!.tag = document.id
+//        marker.setIcon(BitmapDescriptorFactory.fromBitmap(noteMarkerBitmap))
+//        googleMap.setOnMarkerClickListener { marker ->
+//            val noteId = marker.tag.toString()
+//            findNavController(view).navigate(MapsFragmentDirections.actionMapToNoteDetailsFragment(noteId))
+//            true
+//        }
+//        mapMarkers.add(marker)
+//    }
+
+    fun displaySelectedMarkers(filterString: String) {
+        for (mapMarker in mapMarkers) {
+            mapMarker!!.isVisible = mapMarker.title!!.lowercase(Locale.getDefault())
+                    .contains(filterString.lowercase(Locale.getDefault()))
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
+        view = inflater.inflate(R.layout.fragment_maps, container, false)
+        searchView = view.findViewById(R.id.idSearchView)
+        firestore = FirebaseFirestore.getInstance()
+
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val mapFragment = getChildFragmentManager().findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(this)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        viewModel = ViewModelProvider(this)[MapsViewModel::class.java]
+    }
 
     override fun onMapReady(googleMap: GoogleMap) {
 
@@ -82,55 +141,5 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(israel))
     }
 
-//    private fun createNoteMarkerBitmap(): Bitmap {
-//        val height = 100
-//        val width = 100
-//        val bitmapdraw = resources.getDrawable(R.drawable.note, null) as BitmapDrawable
-//        val b = bitmapdraw.bitmap
-//        return Bitmap.createScaledBitmap(b, width, height, false)
-//    }
 
-//    private fun addMarkerToMap(document: QueryDocumentSnapshot, googleMap: GoogleMap) {
-//        val note: Note = Note.create(document.getData())
-//        if (note.isDeleted) return
-//        val coordinate = LatLng(note.latitude, note.longitude)
-//        val noteMarkerBitmap = createNoteMarkerBitmap()
-//        val marker = googleMap.addMarker(MarkerOptions().position(coordinate)
-//                .title(note.title))
-//        marker!!.tag = document.id
-//        marker.setIcon(BitmapDescriptorFactory.fromBitmap(noteMarkerBitmap))
-//        googleMap.setOnMarkerClickListener { marker ->
-//            val noteId = marker.tag.toString()
-//            findNavController(view).navigate(MapsFragmentDirections.actionMapToNoteDetailsFragment(noteId))
-//            true
-//        }
-//        mapMarkers.add(marker)
-//    }
-
-    fun displaySelectedMarkers(filterString: String) {
-        for (mapMarker in mapMarkers) {
-            mapMarker!!.isVisible = mapMarker.title!!.lowercase(Locale.getDefault())
-                    .contains(filterString.lowercase(Locale.getDefault()))
-        }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
-        view = inflater.inflate(R.layout.fragment_maps, container, false)
-        searchView = view.findViewById(R.id.idSearchView)
-        firestore = FirebaseFirestore.getInstance()
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val mapFragment = getChildFragmentManager().findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(this)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        viewModel = ViewModelProvider(this)[MapsViewModel::class.java]
-    }
 }

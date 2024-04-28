@@ -1,11 +1,10 @@
 package com.example.advizors.maps
 
+import android.location.Location
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class MapsViewModel : ViewModel() {
-//    var data: LiveData<MutableList<Note?>?>
-//
-//    init {
-//        data = Model.instance.all
-//    }
+    var location: MutableLiveData<Location> = MutableLiveData();
+
 }
