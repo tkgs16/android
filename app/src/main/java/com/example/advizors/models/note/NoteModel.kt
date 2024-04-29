@@ -1,6 +1,7 @@
 package com.example.advizors.models.note
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.advizors.models.AppLocalDatabase
