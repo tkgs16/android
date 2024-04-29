@@ -47,7 +47,10 @@ class NoteFirebaseModel {
     }
 
     fun getImage(imageId: String, callback: (Uri) -> Unit) {
-        storage.reference.child("images/$NOTES_COLLECTION_PATH/$imageId")
+        Log.d("RONI", imageId)
+        // TODO the png is a patch when i will be able to navigate to crete note
+        // TODO and i will create real note and  not manually we won't need it
+        storage.reference.child("images/notes/$imageId.png")
             .downloadUrl
             .addOnSuccessListener { uri ->
                 callback(uri)

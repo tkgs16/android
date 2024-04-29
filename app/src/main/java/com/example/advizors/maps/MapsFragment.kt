@@ -95,7 +95,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val coordinate = LatLng(note.position.latitude, note.position.longitude)
 //        val noteMarkerBitmap = createNoteMarkerBitmap()
         val marker = googleMap.addMarker(MarkerOptions().position(coordinate))
-
         marker!!.tag = note.id
 //        marker.setIcon(BitmapDescriptorFactory.fromBitmap(noteMarkerBitmap))
 //        googleMap.setOnMarkerClickListener { marker ->
