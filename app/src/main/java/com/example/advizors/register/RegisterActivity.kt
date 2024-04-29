@@ -11,14 +11,14 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.annotation.RequiresExtension
 import androidx.appcompat.app.AppCompatActivity
-import com.example.advizors.R
 import com.example.advizors.MainActivity
+import com.example.advizors.R
+import com.example.advizors.login.LoginActivity
 import com.example.advizors.models.user.User
 import com.example.advizors.models.user.UserModel
 import com.google.android.material.textfield.TextInputEditText
@@ -26,7 +26,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Firebase
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
-import com.example.advizors.login.LoginActivity
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -88,7 +87,6 @@ class RegisterActivity : AppCompatActivity() {
                         .build()
 
                     authenticatedUser.updateProfile(profileUpdates)
-
                     UserModel.instance.addUser(
                         User(authenticatedUser.uid, firstName, lastName),
                         selectedImageURI!!

@@ -28,8 +28,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        // TODO remove later
-        Advizors.Globals.appContext = applicationContext
         setSupportActionBar(findViewById(R.id.toolbar))
         drawer = findViewById(R.id.drawer_layout)
         val drawerToggle = ActionBarDrawerToggle(this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
