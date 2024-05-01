@@ -1,9 +1,12 @@
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.advizors.R
+import com.example.advizors.models.user.UserModel
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -19,19 +22,12 @@ class LogoutFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_logout, container, false)
 
-        // Initialize Firebase Auth
-        auth = FirebaseAuth.getInstance()
+        UserModel.instance.logOff();
 
-        view.setOnClickListener {
-            signOut()
-        }
+//        val i = Intent(getActivity(), LoginActivity::class.java)
+//        startActivity(i)
+//        (getActivity() as Activity?).overridePendingTransition(0, 0)
 
         return view
-    }
-
-    private fun signOut() {
-        auth.signOut()
-        // Redirect the user to the login screen or any other appropriate action
-        // For example, you can navigate to another fragment or activity
     }
 }

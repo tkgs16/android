@@ -19,8 +19,7 @@
             android:title="menu tools" />
         <item
             android:id="@+id/nav_logout"
-            android:title="Log out"
-            app:actionLayout="@layout/fragment_logout" />
+            android:title="Log out" />
     </group>
 
 </menu>
