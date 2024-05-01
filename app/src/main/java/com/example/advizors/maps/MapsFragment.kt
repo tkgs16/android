@@ -34,7 +34,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private var mapMarkers: MutableList<Marker?> = ArrayList()
     lateinit var map: GoogleMap
 
-
     fun displaySelectedMarkers(filterString: String) {
         for (mapMarker in mapMarkers) {
             mapMarker!!.isVisible = mapMarker.title!!.lowercase(Locale.getDefault())
@@ -76,7 +75,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             }
         })
 
-//        googleMap.setOnMapLongClickListener { latLng: LatLng -> Navigation.findNavController(view).navigate(MapsFragmentDirections.actionMapToFragmentAddNote(latLng.latitude.toFloat(), latLng.longitude.toFloat())) }
+        googleMap.setOnMapLongClickListener { latLng: LatLng -> Navigation.findNavController(view).navigate(MapsFragmentDirections.actionMapsFragmentToAddNoteFragment(latLng.latitude.toFloat(), latLng.longitude.toFloat())) }
 
         val notes = NoteModel.instance.getAllNotes()
         notes.observe(viewLifecycleOwner) { notesList ->
