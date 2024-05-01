@@ -16,16 +16,13 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.advizors.R
 import com.example.advizors.models.note.Note
 import com.example.advizors.models.note.NoteModel
 import com.example.advizors.models.note.SerializableLatLng
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.Firebase
@@ -38,7 +35,7 @@ import java.util.UUID
 
 class AddNoteFragment : Fragment() {
     private lateinit var view: View
-    private lateinit var description: TextInputEditText
+    private lateinit var noteContent: TextInputEditText
     private lateinit var spinner: ProgressBar
     private lateinit var attachPictureButton: ImageButton
     private lateinit var submitButton: MaterialButton
@@ -82,23 +79,15 @@ class AddNoteFragment : Fragment() {
 
     private fun initViews(view: View) {
         spinner = view.findViewById(R.id.create_note_progress)
-        description = view.findViewById(R.id.note_content)
+        noteContent = view.findViewById(R.id.note_content)
         attachPictureButton = view.findViewById(R.id.upload_picture_button)
         imageView = view.findViewById(R.id.selected_image)
         submitButton = view.findViewById(R.id.note_submit)
 
+        Log.d("ARGS", args.longitude.toString())
+        Log.d("ARGS", args.latitude.toString())
+        spinner.visibility = GONE
 
-        if (args.noteId.isNotEmpty()) {
-            description.setText(args.description)
-        } else {
-            spinner.visibility = GONE
-        }
-
-        NoteModel.instance.getNoteImage(args.noteId) {
-            attachedPicture = it
-            Picasso.get().load(it).into(imageView)
-            spinner.visibility = GONE
-        }
     }
 
     private fun handleSubmitButton() {
@@ -119,7 +108,7 @@ class AddNoteFragment : Fragment() {
     }
 
     private fun createNewNote() {
-        val descriptionValue = description.text.toString()
+        val descriptionValue = noteContent.text.toString()
 
         if (descriptionValue.isEmpty()) {
             showDialogResponse("Please enter a description")
@@ -130,40 +119,22 @@ class AddNoteFragment : Fragment() {
             return
         }
 
-        var noteId: String;
+        val noteId = UUID.randomUUID().toString()
 
-        if (args.noteId.isNotEmpty()) {
-            noteId = args.noteId
-        } else {
-            noteId = UUID.randomUUID().toString()
-        }
 
         val newNote = auth.currentUser?.let {
             Note(
                 noteId,
                 it.uid,
-                description.text.toString(),
+                noteContent.text.toString(),
                 SerializableLatLng(args.latitude.toDouble(), args.longitude.toDouble()),
             )
         }
 
         spinner.visibility = VISIBLE
-
         if (newNote != null) {
-            if (args.noteId.isNotEmpty()) {
-                NoteModel.instance.updateNote(newNote) {
-                    if (hasImageChanged) {
-                        NoteModel.instance.updateNoteImage(newNote.id, attachedPicture) {
-                            findNavController().popBackStack()
-                        }
-                    } else {
-                        findNavController().popBackStack()
-                    }
-                }
-            } else {
-                NoteModel.instance.addNote(newNote, attachedPicture) {
-                    findNavController().popBackStack()
-                }
+            NoteModel.instance.addNote(newNote, attachedPicture) {
+                findNavController().popBackStack()
             }
         }
     }

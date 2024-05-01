@@ -50,7 +50,7 @@ class NoteFirebaseModel {
         Log.d("RONI", imageId)
         // TODO the png is a patch when i will be able to navigate to crete note
         // TODO and i will create real note and  not manually we won't need it
-        storage.reference.child("images/notes/$imageId.png")
+        storage.reference.child("images/notes/$imageId")
             .downloadUrl
             .addOnSuccessListener { uri ->
                 callback(uri)
