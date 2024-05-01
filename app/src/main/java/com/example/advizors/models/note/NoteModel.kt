@@ -38,7 +38,6 @@ class NoteModel private constructor() {
         refreshNotes()
         return notes ?: database.noteDao().getNotesByUserId(Firebase.auth.currentUser?.uid!!)
     }
-
     private fun refreshNotes() {
         notesListLoadingState.value = LoadingState.LOADING
 

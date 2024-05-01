@@ -96,11 +96,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val marker = googleMap.addMarker(MarkerOptions().position(coordinate))
         marker!!.tag = note.id
 //        marker.setIcon(BitmapDescriptorFactory.fromBitmap(noteMarkerBitmap))
-//        googleMap.setOnMarkerClickListener { marker ->
-//            val noteId = marker.tag.toString()
-//            Navigation.findNavController(view).navigate(MapsFragmentDirections.actionMapToNoteDetailsFragment(noteId))
-//            true
-//        }
+        googleMap.setOnMarkerClickListener { marker ->
+            val noteId = marker.tag.toString()
+            //TODO I need you to navigate to ViewNoteFragment
+//            Navigation.findNavController(view).navigate(MapsFragmentDirections.actionMapToViewNoteFragment(noteId))
+            true
+        }
         mapMarkers.add(marker)
     }
 
