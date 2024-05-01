@@ -12,24 +12,42 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.advizors.maps.MapsViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var  navController: NavController
+    private lateinit var appBarConfiguration : AppBarConfiguration
     private lateinit var drawer: DrawerLayout
+    private lateinit var navHostFragment : NavHostFragment
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val LOCATION_PERMISSION_REQUEST_CODE = 100
     private lateinit var mapsViewModel: MapsViewModel
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
+//        appBarConfiguration = AppBarConfiguration(navController.graph)
+//        setupActionBarWithNavController(navController, appBarConfiguration)
+
+//        appBarConfiguration = AppBarConfiguration(navController.graph,drawer)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
         drawer = findViewById(R.id.drawer_layout)
+
+
         val drawerToggle = ActionBarDrawerToggle(this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
@@ -85,6 +103,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+//    override fun onSupportNavigateUp(): Boolean {
+//        val navController = findNavController(R.id.fragmentContainerView)
+//
+//        return navController.navigateUp(appBarConfiguration)
+//                || super.onSupportNavigateUp()
+//    }
     @SuppressLint("MissingPermission")
     private fun setLocation(fusedLocationClient: FusedLocationProviderClient) {
         fusedLocationClient.lastLocation
