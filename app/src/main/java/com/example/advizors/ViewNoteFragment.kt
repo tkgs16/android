@@ -77,10 +77,9 @@ class ViewNoteFragment : Fragment() {
 
         editBtn.setOnClickListener { v: View? ->
             //TODO I need you to navigate to AddNoteFragment
-//            Navigation.findNavController(v!!).navigate(
-//                NoteDetailsFragmentDirections
-//                    .actionNoteDetailsFragmentToFragmentEditNote(noteId)
-//            )
+            val action = ViewNoteFragmentDirections.actionViewNoteFragmentToAddNoteFragment(0F,0F,detailedNote)
+            Navigation.findNavController(v!!).navigate((action)
+            )
         }
         deleteBtn.setOnClickListener { v: View? ->
             progressBar.visibility = View.VISIBLE
