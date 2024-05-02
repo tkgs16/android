@@ -84,8 +84,18 @@ class AddNoteFragment : Fragment() {
         imageView = view.findViewById(R.id.selected_image)
         submitButton = view.findViewById(R.id.note_submit)
 
-        Log.d("ARGS", args.longitude.toString())
-        Log.d("ARGS", args.latitude.toString())
+        if (args.note != null) {
+            noteContent.setText(args.note!!.content)
+            NoteModel.instance.getNoteImage(args.note!!.id) {
+                attachedPicture = it
+                Picasso.get().load(it).into(imageView)
+                spinner.visibility = GONE
+            }
+        } else {
+            spinner.visibility = GONE
+        }
+
+
         spinner.visibility = GONE
 
     }
@@ -118,23 +128,38 @@ class AddNoteFragment : Fragment() {
             showDialogResponse("Please select a picture")
             return
         }
-
-        val noteId = UUID.randomUUID().toString()
+        val noteId: String = if (args.note != null) {
+            args.note!!.id
+        } else {
+            UUID.randomUUID().toString()
+        }
 
 
         val newNote = auth.currentUser?.let {
             Note(
                 noteId,
-                it.uid,
                 noteContent.text.toString(),
+                it.uid,
                 SerializableLatLng(args.latitude.toDouble(), args.longitude.toDouble()),
             )
         }
 
         spinner.visibility = VISIBLE
         if (newNote != null) {
-            NoteModel.instance.addNote(newNote, attachedPicture) {
-                findNavController().popBackStack()
+            if (args.note != null) {
+                NoteModel.instance.updateNote(newNote) {
+                    if (hasImageChanged) {
+                        NoteModel.instance.updateNoteImage(newNote.id, attachedPicture) {
+                            findNavController().popBackStack()
+                        }
+                    } else {
+                        findNavController().popBackStack()
+                    }
+                }
+            } else {
+                NoteModel.instance.addNote(newNote, attachedPicture) {
+                    findNavController().popBackStack()
+                }
             }
         }
     }

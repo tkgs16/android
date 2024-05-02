@@ -1,6 +1,7 @@
 package com.example.advizors
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,8 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.example.advizors.models.AppLocalDatabase
 import com.example.advizors.models.note.Note
 import com.example.advizors.models.note.NoteModel
 import com.example.advizors.models.note.SerializableLatLng
@@ -31,7 +34,6 @@ private const val ARG_PARAM1 = "noteId"
  */
 class ViewNoteFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var noteId: String? = null
     private lateinit var editBtn: Button
     private lateinit var deleteBtn: Button
     private lateinit var progressBar: ProgressBar
@@ -39,14 +41,8 @@ class ViewNoteFragment : Fragment() {
     private lateinit var imageView: ImageView
     private val auth = Firebase.auth
     private lateinit var detailedNote: Note
+    private val args: ViewNoteFragmentArgs by navArgs()
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            noteId = it.getString(ARG_PARAM1)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,39 +56,45 @@ class ViewNoteFragment : Fragment() {
 
         contentTv = view.findViewById(R.id.details_content_tv)
         imageView = view.findViewById(R.id.details_image)
+        progressBar.visibility = View.VISIBLE
         editBtn.visibility = View.INVISIBLE
         deleteBtn.visibility = View.INVISIBLE
-        detailedNote = noteId?.let { findNoteById(it) }!!
-        contentTv.text = detailedNote.content
-        if(detailedNote.userId == auth.currentUser?.uid  ) {
-            editBtn.visibility = View.VISIBLE
-            deleteBtn.visibility = View.VISIBLE
-        }
-        progressBar.visibility = View.INVISIBLE
-
-        if (detailedNote.imageUrl != null && detailedNote.imageUrl!!.isNotEmpty()) {
-            Picasso.get().load(detailedNote.imageUrl).into(imageView)
+        NoteModel.instance.getAllNotes().observe(viewLifecycleOwner) { it ->
+            detailedNote = it.find { it.id == args.noteId }!!
+            progressBar.visibility = View.INVISIBLE
+            contentTv.text = detailedNote.content
+            detailedNote.userId.let { it1 -> Log.d("malak", it1) }
+            if (detailedNote.userId == auth.currentUser?.uid) {
+                editBtn.visibility = View.VISIBLE
+                deleteBtn.visibility = View.VISIBLE
+            }
+            if (detailedNote.imageUrl != null && detailedNote.imageUrl!!.isNotEmpty()) {
+                Picasso.get().load(detailedNote.imageUrl).into(imageView)
+            }
         }
 
 
         editBtn.setOnClickListener { v: View? ->
             //TODO I need you to navigate to AddNoteFragment
-            val action = ViewNoteFragmentDirections.actionViewNoteFragmentToAddNoteFragment(0F,0F,detailedNote)
-            Navigation.findNavController(v!!).navigate((action)
+            val action = ViewNoteFragmentDirections.actionViewNoteFragmentToAddNoteFragment(
+                detailedNote.position.latitude.toFloat(),
+                detailedNote.position.longitude.toFloat(),
+                detailedNote
+            )
+            Navigation.findNavController(v!!).navigate(
+                (action)
             )
         }
         deleteBtn.setOnClickListener { v: View? ->
             progressBar.visibility = View.VISIBLE
-            NoteModel.instance.deleteNote(detailedNote) {
-                findNavController().popBackStack()
+            detailedNote.let {
+                NoteModel.instance.deleteNote(it) {
+                    findNavController().popBackStack()
+                }
             }
         }
 
         return view
-    }
-
-    private fun findNoteById(noteId: String): Note? {
-        return NoteModel.instance.getAllNotes().value?.find { it.id == noteId }
     }
 
 

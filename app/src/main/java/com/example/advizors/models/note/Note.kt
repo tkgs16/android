@@ -87,7 +87,7 @@ data class Note(
             val longitude = positionJson?.get("longitude") ?: 0.0
             val position = SerializableLatLng(latitude, longitude)
 
-            val note = Note(id, userId, content, position, isDeleted)
+            val note = Note(id, content, userId, position, isDeleted)
 
             val timestamp: Timestamp? = json[LAST_UPDATED_KEY] as? Timestamp
             timestamp?.let {

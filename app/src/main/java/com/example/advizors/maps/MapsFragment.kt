@@ -76,7 +76,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             }
         })
 //        var note = Note("","","", )
-        googleMap.setOnMapLongClickListener { latLng: LatLng -> Navigation.findNavController(view).navigate(MapsFragmentDirections.actionMapsFragmentToAddNoteFragment(latLng.latitude.toFloat(), latLng.longitude.toFloat(),null)) }
+        googleMap.setOnMapLongClickListener { latLng: LatLng -> Navigation.findNavController(view).navigate(MapsFragmentDirections.actionMapsFragmentToAddNoteFragment(latLng.latitude.toFloat(), latLng.longitude.toFloat(), null)) }
 
         val notes = NoteModel.instance.getAllNotes()
         notes.observe(viewLifecycleOwner) { notesList ->
