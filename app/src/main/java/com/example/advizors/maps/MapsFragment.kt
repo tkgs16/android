@@ -14,6 +14,7 @@ import androidx.navigation.Navigation
 import com.example.advizors.R
 import com.example.advizors.models.note.Note
 import com.example.advizors.models.note.NoteModel
+import com.example.advizors.models.note.SerializableLatLng
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -33,7 +34,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private var searchView: SearchView? = null
     private var mapMarkers: MutableList<Marker?> = ArrayList()
     lateinit var map: GoogleMap
-
 
     fun displaySelectedMarkers(filterString: String) {
         for (mapMarker in mapMarkers) {
@@ -75,8 +75,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 return false
             }
         })
-
-//        googleMap.setOnMapLongClickListener { latLng: LatLng -> Navigation.findNavController(view).navigate(MapsFragmentDirections.actionMapToFragmentAddNote(latLng.latitude.toFloat(), latLng.longitude.toFloat())) }
+//        var note = Note("","","", )
+        googleMap.setOnMapLongClickListener { latLng: LatLng -> Navigation.findNavController(view).navigate(MapsFragmentDirections.actionMapsFragmentToAddNoteFragment(latLng.latitude.toFloat(), latLng.longitude.toFloat(), null)) }
 
         val notes = NoteModel.instance.getAllNotes()
         notes.observe(viewLifecycleOwner) { notesList ->
@@ -97,11 +97,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val marker = googleMap.addMarker(MarkerOptions().position(coordinate))
         marker!!.tag = note.id
 //        marker.setIcon(BitmapDescriptorFactory.fromBitmap(noteMarkerBitmap))
-//        googleMap.setOnMarkerClickListener { marker ->
-//            val noteId = marker.tag.toString()
-//            Navigation.findNavController(view).navigate(MapsFragmentDirections.actionMapToNoteDetailsFragment(noteId))
-//            true
-//        }
+        googleMap.setOnMarkerClickListener { marker ->
+            val noteId = marker.tag.toString()
+            Navigation.findNavController(view).navigate(MapsFragmentDirections.actionMapsFragmentToViewNoteFragment(noteId))
+            true
+        }
         mapMarkers.add(marker)
     }
 
