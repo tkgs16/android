@@ -14,7 +14,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.example.advizors.MainActivity
-import com.example.advizors.MainActivity2
 
 class LoginActivity : AppCompatActivity() {
 
@@ -74,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
             "Welcome ${auth.currentUser?.displayName}!",
             Toast.LENGTH_SHORT
         ).show()
-        val intent = Intent(this@LoginActivity, MainActivity2::class.java)
+        val intent = Intent(this@LoginActivity, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
