@@ -8,18 +8,21 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresExtension
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.advizors.R
 import com.example.advizors.databinding.FragmentEditUserBinding
 import com.squareup.picasso.Picasso
 
-class EditMyProfile : AppCompatActivity() {
-    private lateinit var binding: FragmentEditUserBinding
+class EditMyProfilee : Fragment() {
+    private var _binding: FragmentEditUserBinding? = null
+    private val binding get() = _binding!!
     private lateinit var viewModel: EditUserViewModel
 
     private val imageSelectionLauncher =
@@ -30,7 +33,7 @@ class EditMyProfile : AppCompatActivity() {
                 val maxCanvasSize = 5 * 1024 * 1024 // 5MB
                 if (imageSize > maxCanvasSize) {
                     Toast.makeText(
-                        this@EditMyProfile,
+                        requireContext(),
                         "Selected image is too large",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -42,22 +45,26 @@ class EditMyProfile : AppCompatActivity() {
             } catch (e: Exception) {
                 Log.d("EditMyPost", "Error: $e")
                 Toast.makeText(
-                    this@EditMyProfile, "Error processing result", Toast.LENGTH_SHORT
+                    requireContext(), "Error processing result", Toast.LENGTH_SHORT
                 ).show()
             }
         }
 
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_edit_user)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentEditUserBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        binding = FragmentEditUserBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[EditUserViewModel::class.java]
 
         initFields()
         defineUpdateButtonClickListener()
         definePickImageClickListener()
+
+        return view
     }
 
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
@@ -81,36 +88,34 @@ class EditMyProfile : AppCompatActivity() {
         viewModel.loadUser()
 
         binding.editTextFirstName.addTextChangedListener {
-            viewModel.firstName = it?.toString()?.trim() ?: ""
+            viewModel.firstName = it.toString().trim()
         }
-
         binding.editTextLastName.addTextChangedListener {
-            viewModel.lastName = it?.toString()?.trim() ?: ""
+            viewModel.lastName = it.toString().trim()
         }
 
-        viewModel.user.observe(this) { user ->
+        viewModel.user.observe(viewLifecycleOwner) { user ->
             binding.editTextFirstName.setText(user.firstName)
             binding.editTextLastName.setText(user.lastName)
         }
 
-        viewModel.selectedImageURI.observe(this) { uri ->
+        viewModel.selectedImageURI.observe(viewLifecycleOwner) { uri ->
             Picasso.get().load(uri).into(binding.profileImageView)
         }
 
-        viewModel.firstNameError.observe(this) { error ->
-            if (error.isNotEmpty())
-                binding.editTextFirstName.error = error
+        viewModel.firstNameError.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty())
+                binding.editTextFirstName.error = it
         }
-        viewModel.lastNameError.observe(this) { error ->
-            if (error.isNotEmpty())
-                binding.editTextLastName.error = error
+        viewModel.lastNameError.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty())
+                binding.editTextLastName.error = it
         }
     }
 
-
     @SuppressLint("Recycle")
     private fun getImageSize(uri: Uri?): Long {
-        val inputStream = contentResolver.openInputStream(uri!!)
+        val inputStream = requireContext().contentResolver.openInputStream(uri!!)
         return inputStream?.available()?.toLong() ?: 0
     }
 
