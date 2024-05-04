@@ -182,9 +182,4 @@ class AddNoteFragment : Fragment() {
             pickImageContract.launch("image/*")
         }
     }
-
-//    override fun onDestroyView(){
-//        super.onDestroyView()
-//        requireActivity().findViewById<FloatingActionButton>(R.id.fab).isVisible = true;
-//    }
 }
