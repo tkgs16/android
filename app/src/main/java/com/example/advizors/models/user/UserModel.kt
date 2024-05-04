@@ -26,6 +26,7 @@ class UserModel private constructor() {
     }
 
     fun getCurrentUser(): LiveData<User> {
+        refreshAllUsers()
         return database.userDao().getUserById(Firebase.auth.currentUser?.uid!!)
     }
 
