@@ -34,23 +34,17 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     fun displaySelectedMarkers(filterString: String) {
         val userId = users.firstOrNull { it.firstName.lowercase() == filterString.lowercase() }?.id
-        for (mapMarker in mapMarkers) {
-            if (userId == null) mapMarker!!.isVisible = true
-            else mapMarker!!.isVisible = allMarkersMap[mapMarker] == userId
+        mapMarkers.forEach {
+            it!!.isVisible = if (userId == null) true else allMarkersMap[it] == userId
         }
-
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         view = inflater.inflate(R.layout.fragment_maps, container, false)
         searchView = view.findViewById(R.id.idSearchView)
-        UserModel.instance.getAllUsers().observe(viewLifecycleOwner) {
-            users = it
-        }
+        UserModel.instance.getAllUsers().observe(viewLifecycleOwner) { users = it }
         return view
     }
 
@@ -78,13 +72,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 return false
             }
         })
-//        var note = Note("","","", )
         googleMap.setOnMapLongClickListener { latLng: LatLng ->
             Navigation.findNavController(view).navigate(
                 MapsFragmentDirections.actionMapsFragmentToAddNoteFragment(
-                    latLng.latitude.toFloat(),
-                    latLng.longitude.toFloat(),
-                    null
+                    latLng.latitude.toFloat(), latLng.longitude.toFloat(), null
                 )
             )
         }
@@ -96,20 +87,15 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
 
         val israel = LatLng(31.04, 34.8)
-        //            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(israel))
     }
 
     private fun addMarkerToMap(note: Note, googleMap: GoogleMap) {
         if (note.isDeleted) return
         val coordinate = LatLng(note.position.latitude, note.position.longitude)
-//        val noteMarkerBitmap = createNoteMarkerBitmap()
         val marker = googleMap.addMarker(MarkerOptions().position(coordinate))
-        if (marker != null) {
-            allMarkersMap[marker] = note.userId
-        }
+        if (marker != null) allMarkersMap[marker] = note.userId
         marker!!.tag = note.id
-//        marker.setIcon(BitmapDescriptorFactory.fromBitmap(noteMarkerBitmap))
         googleMap.setOnMarkerClickListener {
             val noteId = it.tag.toString()
             Navigation.findNavController(view)
