@@ -1,6 +1,8 @@
 package com.example.advizors.maps
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +20,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
@@ -96,6 +99,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val marker = googleMap.addMarker(MarkerOptions().position(coordinate))
         if (marker != null) allMarkersMap[marker] = note.userId
         marker!!.tag = note.id
+        marker.setIcon(BitmapDescriptorFactory.fromBitmap(createNoteMarkerBitmap()))
         googleMap.setOnMarkerClickListener {
             val noteId = it.tag.toString()
             Navigation.findNavController(view)
@@ -103,6 +107,14 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             true
         }
         mapMarkers.add(marker)
+    }
+
+    private fun createNoteMarkerBitmap(): Bitmap {
+        val height = 115
+        val width = 115
+        val bitmapdraw = resources.getDrawable(R.drawable.note, null) as BitmapDrawable
+        val b = bitmapdraw.bitmap
+        return Bitmap.createScaledBitmap(b, width, height, false)
     }
 
 
