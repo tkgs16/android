@@ -63,7 +63,6 @@ class ViewNoteFragment : Fragment() {
             detailedNote = it.find { it.id == args.noteId }!!
             progressBar.visibility = View.INVISIBLE
             contentTv.text = detailedNote.content
-            detailedNote.userId.let { it1 -> Log.d("malak", it1) }
             if (detailedNote.userId == auth.currentUser?.uid) {
                 editBtn.visibility = View.VISIBLE
                 deleteBtn.visibility = View.VISIBLE
