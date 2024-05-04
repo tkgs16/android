@@ -88,12 +88,14 @@ class MainActivity : AppCompatActivity() {
         val headerView: View = navView.getHeaderView(0)
         headerView.findViewById<TextView>(R.id.user_email).text = "${auth.currentUser?.email}"
         UserModel.instance.getCurrentUser().observe(this) {
-            headerView.findViewById<TextView>(R.id.user_name).text =
-                "${it.firstName} ${it.lastName}"
-            if (it.profileImage != null && it.profileImage!!.isNotEmpty()) {
-                Picasso.get().load(it.profileImage)
-                    .into(headerView.findViewById<ImageView>(R.id.user_image))
-            }
+          if(it != null) {
+              headerView.findViewById<TextView>(R.id.user_name).text =
+                  "${it.firstName} ${it.lastName}"
+              if (it.profileImage != null && it.profileImage!!.isNotEmpty()) {
+                  Picasso.get().load(it.profileImage)
+                      .into(headerView.findViewById<ImageView>(R.id.user_image))
+              }
+          }
         }
 
     }
