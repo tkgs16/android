@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.memoryCacheSettings
@@ -75,5 +76,9 @@ class UserFirebaseModel {
                 .addOnSuccessListener {
             callback()
         }
+    }
+
+    fun signOffUser() {
+        FirebaseAuth.getInstance().signOut()
     }
 }

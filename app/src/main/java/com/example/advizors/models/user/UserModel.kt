@@ -79,4 +79,9 @@ class UserModel private constructor() {
             }
         }
     }
+
+    fun logOff() {
+        firebaseModel.signOffUser()
+    }
+
 }
