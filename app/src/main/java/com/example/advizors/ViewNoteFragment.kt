@@ -48,7 +48,6 @@ class ViewNoteFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_view_note, container, false)
         editBtn = view.findViewById(R.id.details_edit_btn)
         deleteBtn = view.findViewById(R.id.details_delete_btn)
@@ -74,7 +73,6 @@ class ViewNoteFragment : Fragment() {
 
 
         editBtn.setOnClickListener { v: View? ->
-            //TODO I need you to navigate to AddNoteFragment
             val action = ViewNoteFragmentDirections.actionViewNoteFragmentToAddNoteFragment(
                 detailedNote.position.latitude.toFloat(),
                 detailedNote.position.longitude.toFloat(),
@@ -88,7 +86,8 @@ class ViewNoteFragment : Fragment() {
             progressBar.visibility = View.VISIBLE
             detailedNote.let {
                 NoteModel.instance.deleteNote(it) {
-                    findNavController().popBackStack()
+//                    findNavController().popBackStack()
+                    findNavController().navigate(ViewNoteFragmentDirections.actionViewNoteFragmentToMapsFragment())
                 }
             }
         }

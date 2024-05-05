@@ -48,6 +48,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     ): View {
         view = inflater.inflate(R.layout.fragment_maps, container, false)
         searchView = view.findViewById(R.id.idSearchView)
+//        allMarkersMap.clear()
+//        mapMarkers.clear()
         UserModel.instance.getAllUsers().observe(viewLifecycleOwner) {
             users = it
         }
@@ -68,6 +70,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         // adding on query listener for our search view.
+        googleMap.clear()
         searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false
@@ -78,7 +81,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 return false
             }
         })
-//        var note = Note("","","", )
         googleMap.setOnMapLongClickListener { latLng: LatLng ->
             Navigation.findNavController(view).navigate(
                 MapsFragmentDirections.actionMapsFragmentToAddNoteFragment(
@@ -91,6 +93,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         val notes = NoteModel.instance.getAllNotes()
         notes.observe(viewLifecycleOwner) { notesList ->
+
             notesList.forEach { addMarkerToMap(it, googleMap) }
         }
 
@@ -106,7 +109,14 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 //        val noteMarkerBitmap = createNoteMarkerBitmap()
         val marker = googleMap.addMarker(MarkerOptions().position(coordinate))
         if (marker != null) {
-            allMarkersMap[marker] = note.userId
+            if (note.isDeleted)
+            {
+                allMarkersMap[marker] = note.userId
+                marker.remove()
+            }
+            else{
+                allMarkersMap[marker] = note.userId
+            }
         }
         marker!!.tag = note.id
 //        marker.setIcon(BitmapDescriptorFactory.fromBitmap(noteMarkerBitmap))
