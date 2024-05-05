@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -22,6 +23,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.UserInfo
 import com.google.firebase.auth.auth
 import com.squareup.picasso.Picasso
+import java.lang.Exception
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,21 +63,34 @@ class ViewNoteFragment : Fragment() {
         deleteBtn.visibility = View.INVISIBLE
         NoteModel.instance.getAllNotes().observe(viewLifecycleOwner) { it ->
             detailedNote = it.find { it.id == args.noteId }!!
-            progressBar.visibility = View.INVISIBLE
-            contentTv.text = detailedNote.content
-            detailedNote.userId.let { it1 -> Log.d("malak", it1) }
-            if (detailedNote.userId == auth.currentUser?.uid) {
-                editBtn.visibility = View.VISIBLE
-                deleteBtn.visibility = View.VISIBLE
-            }
+
             if (detailedNote.imageUrl != null && detailedNote.imageUrl!!.isNotEmpty()) {
-                Picasso.get().load(detailedNote.imageUrl).into(imageView)
+                Picasso.get().load(detailedNote.imageUrl)
+                    .into(imageView, object : com.squareup.picasso.Callback {
+                        override fun onSuccess() {
+                            progressBar.visibility = View.INVISIBLE
+                            contentTv.text = detailedNote.content
+                            if (detailedNote.userId == auth.currentUser?.uid) {
+                                editBtn.visibility = View.VISIBLE
+                                deleteBtn.visibility = View.VISIBLE
+                            }
+                        }
+
+                        override fun onError(e: Exception?) {
+                            Toast.makeText(
+                                activity,
+                                "Failed to load image",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                    })
             }
+
         }
 
 
         editBtn.setOnClickListener { v: View? ->
-            //TODO I need you to navigate to AddNoteFragment
             val action = ViewNoteFragmentDirections.actionViewNoteFragmentToAddNoteFragment(
                 detailedNote.position.latitude.toFloat(),
                 detailedNote.position.longitude.toFloat(),
@@ -97,23 +112,4 @@ class ViewNoteFragment : Fragment() {
         return view
     }
 
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ViewNoteFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ViewNoteFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                }
-            }
-    }
 }

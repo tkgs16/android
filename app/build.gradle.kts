@@ -41,6 +41,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     val roomVersion = "2.6.1"
     implementation("androidx.drawerlayout:drawerlayout:1.2.0")
     implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
