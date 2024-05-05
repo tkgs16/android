@@ -69,6 +69,7 @@ class EditUserActivity : AppCompatActivity() {
                 if (it.profileImage != null && it.profileImage!!.isNotEmpty()) {
                     Picasso.get().load(it.profileImage)
                         .into(findViewById<ImageView>(R.id.profileEditImageView))
+                   // selectedImageURI = auth.currentUser?.photoUrl
                 }
             }
         }
