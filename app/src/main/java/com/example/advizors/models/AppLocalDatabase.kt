@@ -12,7 +12,7 @@ import com.example.advizors.models.note.Note
 import com.example.advizors.models.user.UserDAO
 
 
-@Database(entities = [User::class, Note::class], version = 9, exportSchema = true)
+@Database(entities = [User::class, Note::class], version = 9, exportSchema = false)
 @TypeConverters(LatLngConverter::class)
 abstract class AppLocalDbRepository : RoomDatabase() {
     abstract fun userDao(): UserDAO
