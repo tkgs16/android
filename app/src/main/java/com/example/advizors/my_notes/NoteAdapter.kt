@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.advizors.models.note.Note
 import com.example.advizors.R
+import com.squareup.picasso.Picasso
 
 class NoteAdapter(private var notes: List<Note>) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
@@ -39,11 +40,11 @@ class NoteAdapter(private var notes: List<Note>) : RecyclerView.Adapter<NoteAdap
         fun bind(note: Note) {
             textViewContent.text = note.content
 
-            // Check if note has image URL, if yes, load it using Glide
             note.imageUrl?.let { imageUrl ->
                 imageViewNote.visibility = View.VISIBLE
-                Glide.with(itemView.context)
-                    .load(Uri.parse(imageUrl))
+                Picasso.get()
+                    .load(imageUrl)
+                    .fit()
                     .centerCrop()
                     .into(imageViewNote)
             } ?: run {

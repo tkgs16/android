@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +14,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.annotation.RequiresExtension
 import androidx.fragment.app.Fragment
 import com.example.advizors.MainActivity
@@ -25,9 +23,9 @@ import com.example.advizors.models.user.User
 import com.example.advizors.models.user.UserModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.Firebase
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.auth
 import com.squareup.picasso.Picasso
 
 class EditUserFragment : Fragment() {
@@ -63,12 +61,16 @@ class EditUserFragment : Fragment() {
         passwordEditText = view.findViewById(R.id.editTextPassword)
         confirmPasswordEditText = view.findViewById(R.id.editTextConfirmPassword)
 
+        return view
+    }
+    @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         populateUserInformation()
         defineImageSelectionCallBack()
         openGallery()
         updateUser()
-
-        return view
     }
 
     private fun populateUserInformation() {
@@ -132,7 +134,7 @@ class EditUserFragment : Fragment() {
 
     private fun validateField(isValid: Boolean, layout: TextInputLayout, error: String): Boolean {
         if (!isValid) {
-            layout.error = error
+            layout.error = error;
             return false
         }
         layout.error = null
@@ -166,17 +168,9 @@ class EditUserFragment : Fragment() {
             "Password must contain at least one digit"
         ) else false
 
-        val isConfirmPasswordNotEmpty = validateField(
-            confirmPassword.isNotEmpty(),
-            confirmPasswordInputLayout,
-            "Confirm password cannot be empty"
-        )
+        val isConfirmPasswordNotEmpty = validateField(confirmPassword.isNotEmpty(), confirmPasswordInputLayout, "Confirm password cannot be empty")
 
-        val isPasswordsMatch = if (isConfirmPasswordNotEmpty) validateField(
-            password == confirmPassword,
-            confirmPasswordInputLayout,
-            "Passwords don't match"
-        ) else false
+        val isPasswordsMatch = if(isConfirmPasswordNotEmpty) validateField(password == confirmPassword, confirmPasswordInputLayout, "Passwords don't match") else false
 
         if (selectedImageURI == null) {
             Toast.makeText(
@@ -205,7 +199,7 @@ class EditUserFragment : Fragment() {
 
     private fun defineImageSelectionCallBack() {
         imageSelectionCallBack = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
+            StartActivityForResult()
         ) { result: ActivityResult ->
             try {
                 val imageUri: Uri? = result.data?.data
