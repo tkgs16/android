@@ -1,4 +1,5 @@
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,11 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.advizors.models.note.Note
-import com.example.advizors.my_notes.NoteAdapter
 import com.example.advizors.my_notes.NoteViewModel
 import com.example.advizors.R
 
-class MyNotesFragment : Fragment() {
+class MyNotesFragment : Fragment(), NoteAdapter.OnNoteClickListener {
 
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var noteAdapter: NoteAdapter
@@ -26,7 +26,7 @@ class MyNotesFragment : Fragment() {
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        noteAdapter = NoteAdapter(emptyList()) // Initially empty, will be updated later
+        noteAdapter = NoteAdapter(emptyList(), this) // Initially empty, will be updated later
         recyclerView.adapter = noteAdapter
 
         return view
@@ -48,5 +48,13 @@ class MyNotesFragment : Fragment() {
 
     private fun updateNotesList(notes: List<Note>) {
         noteAdapter.updateNotes(notes)
+    }
+
+    override fun onNoteClicked(noteId: String) {
+        // Handle navigation to another fragment with the noteId
+        // Example: Navigate to a new fragment using Navigation Component
+//        val action = MyNotesFragmentDirections.actionMyNotesFragmentToNoteDetailFragment(noteId)
+//        findNavController().navigate(action)
+        Log.d("BRO", noteId)
     }
 }
