@@ -81,7 +81,7 @@
         style="?attr/materialButtonOutlinedStyle"
         android:layout_width="372dp"
         android:layout_height="wrap_content"
-        android:text="Sign in" />
+        android:text="Sign up" />
 
 
 </LinearLayout>
