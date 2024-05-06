@@ -6,20 +6,28 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/mapsFragment"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/map_pin"
             android:title="@string/map" />
 
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:icon="@drawable/my_notes"
+            android:title="@string/my_notes" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/editUserActivity"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:title="@string/details" />
+
     </group>
+    <item
+    android:title="">
+    <menu>
+        <item
+            android:id="@+id/logoutFragment"
+            android:icon="@drawable/baseline_logout_24"
+            android:title="@string/logout"
+            android:iconTint="@color/red"
+            />
+    </menu>
+    </item>
 </menu>
