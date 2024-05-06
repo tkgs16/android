@@ -10,11 +10,11 @@
             android:title="@string/map" />
 
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/myNotesFragment"
             android:icon="@drawable/my_notes"
             android:title="@string/my_notes" />
         <item
-            android:id="@+id/editUserActivity"
+            android:id="@+id/editUserFragment"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/details" />
 
