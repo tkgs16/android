@@ -26,7 +26,6 @@
             android:id="@+id/logoutFragment"
             android:icon="@drawable/baseline_logout_24"
             android:title="@string/logout"
-            android:iconTint="@color/red"
             />
     </menu>
     </item>

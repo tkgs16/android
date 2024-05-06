@@ -71,13 +71,9 @@
             android:name="noteId"
             app:argType="string" />
     </fragment>
-    <activity
-        android:id="@+id/logoutActivity"
-        android:name="com.example.advizors.login.LogoutActivity"
-        android:label="LogoutActivity" />
     <fragment
         android:id="@+id/logoutFragment"
-        android:name="LogoutFragment"
+        android:name="com.example.advizors.login.LogoutFragment"
         android:label="LogoutFragment" />
     <fragment
         android:id="@+id/myNotesFragment"
