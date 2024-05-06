@@ -71,4 +71,16 @@
             android:name="noteId"
             app:argType="string" />
     </fragment>
+    <activity
+        android:id="@+id/logoutActivity"
+        android:name="com.example.advizors.login.LogoutActivity"
+        android:label="LogoutActivity" />
+    <activity
+        android:id="@+id/editUserActivity"
+        android:name="com.example.advizors.register.EditUserActivity"
+        android:label="EditUserActivity" />
+    <fragment
+        android:id="@+id/logoutFragment"
+        android:name="LogoutFragment"
+        android:label="LogoutFragment" />
 </navigation>

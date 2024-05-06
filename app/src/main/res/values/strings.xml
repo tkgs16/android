@@ -15,5 +15,8 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="map"> Map</string>
+    <string name="my_notes">My notes </string>
+    <string name="details">Update details </string>
+    <string name="logout">Logout</string>
 
 </resources>
