@@ -1,18 +1,14 @@
-package com.example.advizors.my_notes
-
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.advizors.models.note.Note
 import com.example.advizors.R
 import com.squareup.picasso.Picasso
 
-class NoteAdapter(private var notes: List<Note>) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
+class NoteAdapter(private var notes: List<Note>, private val listener: OnNoteClickListener) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_note, parent, false)
@@ -33,9 +29,22 @@ class NoteAdapter(private var notes: List<Note>) : RecyclerView.Adapter<NoteAdap
         notifyDataSetChanged()
     }
 
-    inner class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         private val textViewContent: TextView = itemView.findViewById(R.id.textViewContent)
         private val imageViewNote: ImageView = itemView.findViewById(R.id.imageViewNote)
+
+        init {
+            // Set click listener here
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                val noteId = notes[position].id
+                listener.onNoteClicked(noteId)
+            }
+        }
 
         fun bind(note: Note) {
             textViewContent.text = note.content
@@ -51,5 +60,10 @@ class NoteAdapter(private var notes: List<Note>) : RecyclerView.Adapter<NoteAdap
                 imageViewNote.visibility = View.GONE
             }
         }
+    }
+
+    // Interface for click listener
+    interface OnNoteClickListener {
+        fun onNoteClicked(noteId: String)
     }
 }
