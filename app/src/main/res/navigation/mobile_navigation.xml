@@ -75,10 +75,6 @@
         android:id="@+id/logoutActivity"
         android:name="com.example.advizors.login.LogoutActivity"
         android:label="LogoutActivity" />
-    <activity
-        android:id="@+id/editUserActivity"
-        android:name="com.example.advizors.register.EditUserActivity"
-        android:label="EditUserActivity" />
     <fragment
         android:id="@+id/logoutFragment"
         android:name="LogoutFragment"
@@ -91,4 +87,8 @@
             android:id="@+id/action_myNotesFragment_to_viewNoteFragment"
             app:destination="@id/viewNoteFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/editUserFragment"
+        android:name="com.example.advizors.register.EditUserFragment"
+        android:label="EditUserFragment" />
 </navigation>
