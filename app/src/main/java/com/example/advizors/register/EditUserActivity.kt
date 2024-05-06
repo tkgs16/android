@@ -122,62 +122,6 @@ class EditUserActivity : AppCompatActivity() {
         }
     }
 
-//    private fun createNewUser() {
-//        firstNameInputLayout = findViewById(R.id.layoutFirstName)
-//        firstNameEditText = findViewById(R.id.editTextFirstName)
-//        lastNameInputLayout = findViewById(R.id.layoutLastName)
-//        lastNameEditText = findViewById(R.id.editTextLastName)
-////        passwordInputLayout = findViewById(R.id.layoutPassword)
-////        passwordEditText = findViewById(R.id.editTextPassword)
-////        confirmPasswordInputLayout = findViewById(R.id.layoutConfirmPassword)
-////        confirmPasswordEditText = findViewById(R.id.editTextConfirmPassword)
-//
-//        findViewById<Button>(R.id.SignUpButton).setOnClickListener {
-//            val firstName = firstNameEditText.text.toString().trim()
-//            val lastName = lastNameEditText.text.toString().trim()
-////            val password = passwordEditText.text.toString().trim()
-////            val confirmPassword = confirmPasswordEditText.text.toString().trim()
-//
-//            val isValidUser =
-//                validateUser(firstName, lastName, password, confirmPassword)
-//
-//            if (isValidUser) {
-//                auth.updateCurrentUser()
-//                auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
-//                    val authenticatedUser = it.user!!
-//
-//                    val profileUpdates = UserProfileChangeRequest.Builder()
-//                        .setPhotoUri(selectedImageURI)
-//                        .setDisplayName("$firstName $lastName")
-//                        .build()
-//
-//                    authenticatedUser.updateProfile(profileUpdates)
-//                    UserModel.instance.addUser(
-//                        User(authenticatedUser.uid, firstName, lastName),
-//                        selectedImageURI!!
-//                    ) {
-//                        Toast.makeText(
-//                            this@EditUserActivity,
-//                            "Register Successful",
-//                            Toast.LENGTH_SHORT
-//                        )
-//                            .show()
-//                        //TODO refactor main activity
-//                        val intent = Intent(this@EditUserActivity, MainActivity::class.java)
-//                        startActivity(intent)
-//                        finish()
-//                    }
-//                }.addOnFailureListener {
-//                    Toast.makeText(
-//                        this@EditUserActivity,
-//                        "Register Failed, " + it.message,
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//            }
-//        }
-//    }
-
     private fun validateField(isValid: Boolean, layout: TextInputLayout, error: String): Boolean {
         if (!isValid) {
             layout.error = error;

@@ -1,4 +1,5 @@
-import android.app.Activity
+package com.example.advizors.login
+
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,27 +8,26 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.advizors.R
 import com.example.advizors.models.user.UserModel
-import com.google.firebase.auth.FirebaseAuth
-
 
 class LogoutFragment : Fragment() {
 
-    private lateinit var auth: FirebaseAuth
-
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View?  {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_logout, container, false)
+    ): View? {
+        return inflater.inflate(R.layout.fragment_logout, container, false)
+    }
 
-        UserModel.instance.logOff();
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-//        val i = Intent(getActivity(), LoginActivity::class.java)
-//        startActivity(i)
-//        (getActivity() as Activity?).overridePendingTransition(0, 0)
+        UserModel.instance.logOff()
+        startLoginActivity()
+    }
 
-        return view
+    private fun startLoginActivity() {
+        val intent = Intent(requireContext(), LoginActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
     }
 }
