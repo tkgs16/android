@@ -12,7 +12,7 @@ import com.example.advizors.my_notes.NoteAdapter
 import com.example.advizors.my_notes.NoteViewModel
 import com.example.advizors.R
 
-class UserNotesFragment : Fragment() {
+class MyNotesFragment : Fragment() {
 
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var noteAdapter: NoteAdapter
@@ -22,7 +22,7 @@ class UserNotesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_user_notes, container, false)
+        val view = inflater.inflate(R.layout.fragment_my_notes, container, false)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
