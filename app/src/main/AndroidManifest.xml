@@ -41,10 +41,10 @@
             android:value="AIzaSyDk8EXpv_g8xg30Ce9pm4YVax-l4opy4ZM" />
 
         <activity
-            android:name=".register.RegisterActivity"
+            android:name=".models.user.register.RegisterActivity"
             android:exported="true" />
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".models.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
