@@ -76,12 +76,23 @@ class UserModel private constructor() {
         firebaseModel.getImage(imageId, callback);
     }
 
-    fun addUser(user: User, selectedImageUri: Uri, callback: () -> Unit) {
-        firebaseModel.addUser(user) {
-            firebaseModel.addUserImage(user.id, selectedImageUri) {
+    fun addUser(user: User, selectedImageUri: Uri?, callback: () -> Unit) {
+        val addImageCallback: () -> Unit = {
+            firebaseModel.addUserImage(user.id, selectedImageUri!!) {
                 refreshAllUsers()
                 callback()
             }
+        }
+
+        val addUserCallback: () -> Unit = {
+            refreshAllUsers()
+            callback()
+        }
+
+        if (selectedImageUri != null) {
+            firebaseModel.addUser(user, addImageCallback)
+        } else {
+            firebaseModel.addUser(user, addUserCallback)
         }
     }
 

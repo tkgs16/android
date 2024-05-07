@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.annotation.RequiresExtension
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.example.advizors.MainActivity
 import com.example.advizors.R
@@ -37,10 +39,6 @@ class EditUserFragment : Fragment() {
     private lateinit var firstNameEditText: TextInputEditText
     private lateinit var lastNameInputLayout: TextInputLayout
     private lateinit var lastNameEditText: TextInputEditText
-    private lateinit var passwordInputLayout: TextInputLayout
-    private lateinit var passwordEditText: TextInputEditText
-    private lateinit var confirmPasswordInputLayout: TextInputLayout
-    private lateinit var confirmPasswordEditText: TextInputEditText
 
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
     @SuppressLint("MissingInflatedId")
@@ -53,13 +51,9 @@ class EditUserFragment : Fragment() {
 
         firstNameInputLayout = view.findViewById(R.id.layoutEditFirstName)
         lastNameInputLayout = view.findViewById(R.id.layoutEditLastName)
-        passwordInputLayout = view.findViewById(R.id.layoutEditPassword)
-        confirmPasswordInputLayout = view.findViewById(R.id.layoutEditConfirmPassword)
 
         firstNameEditText = view.findViewById(R.id.editTextFirstName)
         lastNameEditText = view.findViewById(R.id.editTextLastName)
-        passwordEditText = view.findViewById(R.id.editTextPassword)
-        confirmPasswordEditText = view.findViewById(R.id.editTextConfirmPassword)
 
         return view
     }
@@ -67,8 +61,8 @@ class EditUserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        populateUserInformation()
         defineImageSelectionCallBack()
+        populateUserInformation()
         openGallery()
         updateUser()
     }
@@ -91,31 +85,31 @@ class EditUserFragment : Fragment() {
             val user = auth.currentUser
             val newFirstName = firstNameEditText.text.toString().trim()
             val newLastName = lastNameEditText.text.toString().trim()
-            val password = passwordEditText.text.toString().trim()
-            val confirmPassword = confirmPasswordEditText.text.toString().trim()
 
             val isValidUser =
-                validateUser(newFirstName, newLastName, password, confirmPassword)
+                validateUser(newFirstName, newLastName,)
 
             if (isValidUser) {
                 if (user != null) {
                     auth.updateCurrentUser(user).addOnSuccessListener {
-                        val profileUpdates = UserProfileChangeRequest.Builder()
-                            .setPhotoUri(selectedImageURI)
+                        val profileUpdatesBuilder = UserProfileChangeRequest.Builder()
                             .setDisplayName("$newFirstName $newLastName")
-                            .build()
 
+                        if (selectedImageURI != null) {
+                            profileUpdatesBuilder.setPhotoUri(selectedImageURI)
+                        }
+
+                        val profileUpdates = profileUpdatesBuilder.build()
                         user.updateProfile(profileUpdates)
                         UserModel.instance.addUser(
                             User(user.uid, newFirstName, newLastName),
-                            selectedImageURI!!
+                            selectedImageURI
                         ) {
                             Toast.makeText(
                                 requireContext(),
-                                "Register Successful",
+                                "Edit Successful",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            //TODO refactor main activity
                             val intent = Intent(requireContext(), MainActivity::class.java)
                             startActivity(intent)
                             requireActivity().finish()
@@ -123,7 +117,7 @@ class EditUserFragment : Fragment() {
                     }.addOnFailureListener {
                         Toast.makeText(
                             requireContext(),
-                            "Register Failed, " + it.message,
+                            "Edit Failed, " + it.message,
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -144,8 +138,6 @@ class EditUserFragment : Fragment() {
     private fun validateUser(
         firstName: String,
         lastName: String,
-        password: String,
-        confirmPassword: String
     ): Boolean {
         val isFirstNameValid = validateField(
             firstName.isNotEmpty(),
@@ -153,34 +145,12 @@ class EditUserFragment : Fragment() {
             "First name cannot be empty"
         )
 
-        val isLastNameValid =
-            validateField(lastName.isNotEmpty(), lastNameInputLayout, "Last name cannot be empty")
-        val isPasswordNotEmpty =
-            validateField(password.isNotEmpty(), passwordInputLayout, "Password cannot be empty")
-        val isPasswordNotShort = if (isPasswordNotEmpty) validateField(
-            password.length >= 6,
-            passwordInputLayout,
-            "Password must be at least 6 characters"
-        ) else false
-        val isPasswordValid = if (isPasswordNotShort) validateField(
-            password.any { it.isDigit() },
-            passwordInputLayout,
-            "Password must contain at least one digit"
-        ) else false
+        val isLastNameValid = validateField(
+            lastName.isNotEmpty(),
+            lastNameInputLayout,
+            "Last name cannot be empty")
 
-        val isConfirmPasswordNotEmpty = validateField(confirmPassword.isNotEmpty(), confirmPasswordInputLayout, "Confirm password cannot be empty")
-
-        val isPasswordsMatch = if(isConfirmPasswordNotEmpty) validateField(password == confirmPassword, confirmPasswordInputLayout, "Passwords don't match") else false
-
-        if (selectedImageURI == null) {
-            Toast.makeText(
-                requireContext(),
-                "You must select Profile Image",
-                Toast.LENGTH_SHORT
-            ).show()
-            return false
-        }
-        return isFirstNameValid && isLastNameValid && isPasswordValid && isPasswordsMatch
+        return isFirstNameValid && isLastNameValid
     }
 
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
@@ -214,6 +184,7 @@ class EditUserFragment : Fragment() {
                         ).show()
                     } else {
                         selectedImageURI = imageUri
+                        Log.d("IMAGE SHIT", imageUri.toString())
                         requireView().findViewById<ImageView>(R.id.profileEditImageView).setImageURI(imageUri)
                     }
                 } else {
