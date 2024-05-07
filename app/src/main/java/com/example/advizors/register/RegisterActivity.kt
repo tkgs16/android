@@ -97,7 +97,6 @@ class RegisterActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         )
                             .show()
-                        //TODO refactor main activity
                         val intent = Intent(this@RegisterActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -123,7 +122,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun validateField(isValid: Boolean, layout: TextInputLayout, error: String): Boolean {
         if (!isValid) {
-            layout.error = error;
+            layout.error = error
             return false
         }
         layout.error = null

@@ -1,8 +1,6 @@
 package com.example.advizors
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,31 +9,23 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.advizors.models.AppLocalDatabase
 import com.example.advizors.models.note.Note
 import com.example.advizors.models.note.NoteModel
-import com.example.advizors.models.note.SerializableLatLng
-import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Firebase
-import com.google.firebase.auth.UserInfo
 import com.google.firebase.auth.auth
 import com.squareup.picasso.Picasso
-import java.lang.Exception
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "noteId"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [ViewNoteFragment.newInstance] factory method to
+ * Use the [ViewNoteFragment] factory method to
  * create an instance of this fragment.
  */
 class ViewNoteFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private lateinit var editBtn: Button
     private lateinit var deleteBtn: Button
     private lateinit var progressBar: ProgressBar
@@ -100,7 +90,7 @@ class ViewNoteFragment : Fragment() {
                 (action)
             )
         }
-        deleteBtn.setOnClickListener { v: View? ->
+        deleteBtn.setOnClickListener {
             progressBar.visibility = View.VISIBLE
             detailedNote.let {
                 NoteModel.instance.deleteNote(it) {

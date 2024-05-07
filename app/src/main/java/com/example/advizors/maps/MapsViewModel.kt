@@ -5,6 +5,5 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class MapsViewModel : ViewModel() {
-    var location: MutableLiveData<Location> = MutableLiveData();
-
+    var location: MutableLiveData<Location> = MutableLiveData()
 }
