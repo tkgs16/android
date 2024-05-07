@@ -3,13 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/nav_home">
+    app:startDestination="@id/mapsFragment">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.advizors.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_delete_ui"
+        android:name="com.example.advizors.ui.deleteUi.DeleteUiFragment"
+        tools:layout="@layout/fragment_delete_ui" />
 
     <fragment
         android:id="@+id/nav_gallery"
@@ -70,6 +69,11 @@
         <argument
             android:name="noteId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_viewNoteFragment_to_nav_delete_ui"
+            app:destination="@id/nav_delete_ui"
+            app:popUpTo="@+id/mobile_navigation"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/logoutFragment"
