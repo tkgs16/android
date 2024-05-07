@@ -17,9 +17,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
-        android:id="@+id/details_content_tv"
+        android:id="@+id/user_name_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -30,6 +29,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/create_note_progress" />
+    <TextView
+        android:id="@+id/details_content_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="@id/user_name_tv"
+        app:layout_constraintStart_toStartOf="@id/user_name_tv"
+        app:layout_constraintTop_toTopOf="@+id/user_name_tv" />
 
     <ImageView
         android:id="@+id/details_image"

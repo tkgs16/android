@@ -1,23 +1,28 @@
-package com.example.advizors
+package com.example.advizors.maps
 
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
+import com.example.advizors.R
 import com.example.advizors.models.note.Note
 import com.example.advizors.models.note.NoteModel
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import com.squareup.picasso.Picasso
+import com.example.advizors.models.user.User
+import com.example.advizors.models.user.UserModel
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 
 
 /**
@@ -30,9 +35,11 @@ class ViewNoteFragment : Fragment() {
     private lateinit var deleteBtn: Button
     private lateinit var progressBar: ProgressBar
     private lateinit var contentTv: TextView
+    private lateinit var userNameTv: TextView
     private lateinit var imageView: ImageView
     private val auth = Firebase.auth
     private lateinit var detailedNote: Note
+    private lateinit var detailedUser : User
     private val args: ViewNoteFragmentArgs by navArgs()
 
 
@@ -45,7 +52,7 @@ class ViewNoteFragment : Fragment() {
         editBtn = view.findViewById(R.id.details_edit_btn)
         deleteBtn = view.findViewById(R.id.details_delete_btn)
         progressBar = view.findViewById(R.id.details_progress_bar)
-
+        userNameTv = view.findViewById(R.id.user_name_tv)
         contentTv = view.findViewById(R.id.details_content_tv)
         imageView = view.findViewById(R.id.details_image)
         progressBar.visibility = View.VISIBLE
@@ -53,13 +60,17 @@ class ViewNoteFragment : Fragment() {
         deleteBtn.visibility = View.INVISIBLE
         NoteModel.instance.getAllNotes().observe(viewLifecycleOwner) { it ->
             detailedNote = it.find { it.id == args.noteId }!!
-
             if (detailedNote.imageUrl != null && detailedNote.imageUrl!!.isNotEmpty()) {
                 Picasso.get().load(detailedNote.imageUrl)
                     .into(imageView, object : com.squareup.picasso.Callback {
                         override fun onSuccess() {
                             progressBar.visibility = View.INVISIBLE
-                            contentTv.text = detailedNote.content
+                            contentTv.text = "Content : ${detailedNote.content}"
+
+                            UserModel.instance.getAllUsers().observe(viewLifecycleOwner){it->
+                                detailedUser = it.find { it.id == detailedNote.userId }!!
+                                userNameTv.text = "Note by: ${detailedUser?.firstName} ${detailedUser?.lastName}"
+                            }
                             if (detailedNote.userId == auth.currentUser?.uid) {
                                 editBtn.visibility = View.VISIBLE
                                 deleteBtn.visibility = View.VISIBLE
@@ -94,7 +105,13 @@ class ViewNoteFragment : Fragment() {
             progressBar.visibility = View.VISIBLE
             detailedNote.let {
                 NoteModel.instance.deleteNote(it) {
-                    findNavController().popBackStack()
+//                    findNavController().popBackStack()
+                    var fm:FragmentManager = requireActivity().supportFragmentManager
+                    val fragmentTransaction = fm.beginTransaction()
+                    for(i in 0 until fm.backStackEntryCount) {
+                    fm.popBackStack();
+                }
+                    findNavController().navigate(ViewNoteFragmentDirections.actionViewNoteFragmentToNavDeleteUi())
                 }
             }
         }

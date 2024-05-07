@@ -30,6 +30,11 @@ class UserModel private constructor() {
         return database.userDao().getUserById(Firebase.auth.currentUser?.uid!!)
     }
 
+    fun getUserById(id:String): LiveData<User> {
+        refreshAllUsers()
+        return database.userDao().getUserById(id)
+    }
+
     fun refreshAllUsers() {
         val lastUpdated: Long = User.lastUpdated
 
@@ -79,4 +84,9 @@ class UserModel private constructor() {
             }
         }
     }
+
+    fun logOff() {
+        firebaseModel.signOffUser()
+    }
+
 }
