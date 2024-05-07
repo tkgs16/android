@@ -11,17 +11,6 @@
         tools:layout="@layout/fragment_delete_ui" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.advizors.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.advizors.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
-    <fragment
         android:id="@+id/mapsFragment"
         android:name="com.example.advizors.maps.MapsFragment"
         android:label="@string/map">
