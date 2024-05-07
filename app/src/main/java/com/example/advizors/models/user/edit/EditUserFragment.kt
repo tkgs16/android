@@ -184,7 +184,6 @@ class EditUserFragment : Fragment() {
                         ).show()
                     } else {
                         selectedImageURI = imageUri
-                        Log.d("IMAGE SHIT", imageUri.toString())
                         requireView().findViewById<ImageView>(R.id.profileEditImageView).setImageURI(imageUri)
                     }
                 } else {
