@@ -8,7 +8,7 @@
     android:paddingLeft="20dp"
     android:paddingTop="20dp"
     android:paddingRight="20dp"
-    tools:context=".register.EditUserFragment">
+    tools:context=".models.user.edit.EditUserFragment">
 
     <ImageView
         android:id="@+id/profileEditImageView"
