@@ -3,14 +3,18 @@ package com.example.advizors.maps
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.advizors.R
 import com.example.advizors.models.note.Note
 import com.example.advizors.models.note.NoteModel
@@ -24,6 +28,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import java.util.Locale
 
 
 class MapsFragment : Fragment(), OnMapReadyCallback {
@@ -33,6 +38,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private var mapMarkers: MutableList<Marker?> = ArrayList()
     private lateinit var users: MutableList<User>
     private val allMarkersMap: HashMap<Marker, String> = HashMap()
+    private val mapsViewModel by activityViewModels<MapsViewModel>()
+
 
 
     fun displaySelectedMarkers(filterString: String) {
@@ -58,11 +65,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         mapFragment?.getMapAsync(this)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        viewModel = ViewModelProvider(this)[MapsViewModel::class.java]
-    }
-
     override fun onMapReady(googleMap: GoogleMap) {
         // adding on query listener for our search view.
         searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -75,6 +77,19 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 return false
             }
         })
+        val location = mapsViewModel.location.value?.let {
+            LatLng(
+                mapsViewModel.location.value!!.latitude,
+                it.longitude
+            )
+        }
+
+        location?.let {
+            val cameraUpdate = CameraUpdateFactory.newLatLng(
+                it
+            )
+            googleMap.moveCamera(cameraUpdate)
+        }
         googleMap.setOnMapLongClickListener { latLng: LatLng ->
             Navigation.findNavController(view).navigate(
                 MapsFragmentDirections.actionMapsFragmentToAddNoteFragment(
@@ -87,10 +102,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         notes.observe(viewLifecycleOwner) { notesList ->
             notesList.forEach { addMarkerToMap(it, googleMap) }
         }
-
-
-        val israel = LatLng(31.04, 34.8)
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(israel))
     }
 
     private fun addMarkerToMap(note: Note, googleMap: GoogleMap) {

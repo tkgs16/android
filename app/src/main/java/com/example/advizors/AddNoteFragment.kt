@@ -56,25 +56,12 @@ class AddNoteFragment : Fragment() {
             R.layout.fragment_add_note, container, false
         )
 
-        getDeviceLocation()
         initViews(view)
         handleSubmitButton()
         handleAttachProductPicture()
 
-//        requireActivity().findViewById<FloatingActionButton>(R.id.fab).isVisible = false;
 
         return view
-    }
-
-    private fun getDeviceLocation() {
-        val geocoder = context?.let { Geocoder(it, Locale.getDefault()) }
-        val addresses =
-            geocoder?.getFromLocation(args.latitude.toDouble(), args.longitude.toDouble(), 1)
-        if (addresses?.size!! > 0) {
-            countryCode = addresses[0].countryCode
-        } else {
-            findNavController().popBackStack()
-        }
     }
 
     private fun initViews(view: View) {
