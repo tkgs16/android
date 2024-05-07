@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.advizors.models.note.Note
 import com.example.advizors.my_notes.NoteViewModel
 import com.example.advizors.R
+import androidx.navigation.fragment.findNavController
 
 class MyNotesFragment : Fragment(), NoteAdapter.OnNoteClickListener {
 
@@ -51,10 +52,6 @@ class MyNotesFragment : Fragment(), NoteAdapter.OnNoteClickListener {
     }
 
     override fun onNoteClicked(noteId: String) {
-        // Handle navigation to another fragment with the noteId
-        // Example: Navigate to a new fragment using Navigation Component
-//        val action = MyNotesFragmentDirections.actionMyNotesFragmentToNoteDetailFragment(noteId)
-//        findNavController().navigate(action)
-        Log.d("BRO", noteId)
+        findNavController().navigate(MyNotesFragmentDirections.actionMyNotesFragmentToViewNoteFragment(noteId))
     }
 }
