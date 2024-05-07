@@ -70,6 +70,15 @@
         <argument
             android:name="noteId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_viewNoteFragment_to_myNotesFragment"
+            app:destination="@id/myNotesFragment" />
+        <action
+            android:id="@+id/action_viewNoteFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_viewNoteFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
     </fragment>
     <fragment
         android:id="@+id/logoutFragment"

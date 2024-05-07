@@ -11,11 +11,14 @@ import com.example.advizors.models.note.Note
 import com.example.advizors.my_notes.NoteAdapter
 import com.example.advizors.my_notes.NoteViewModel
 import com.example.advizors.R
+import com.example.advizors.databinding.FragmentHomeBinding
 
 class MyNotesFragment : Fragment() {
 
+//    private var _binding: FragmentHomeBinding? = null
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var noteAdapter: NoteAdapter
+//    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,6 +26,7 @@ class MyNotesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_my_notes, container, false)
+//        _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())

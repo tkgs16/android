@@ -11,7 +11,9 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.example.advizors.R
+import com.example.advizors.ViewNoteFragmentArgs
 import com.example.advizors.models.note.Note
 import com.example.advizors.models.note.NoteModel
 import com.example.advizors.models.user.User
@@ -35,6 +37,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private val allMarkersMap: HashMap<Marker, String> = HashMap()
 
 
+
+//    private lateinit var  currentMap :GoogleMap
+
+
     fun displaySelectedMarkers(filterString: String) {
         val userId = users.firstOrNull { it.firstName.lowercase() == filterString.lowercase() }?.id
         mapMarkers.forEach {
@@ -45,6 +51,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+
         view = inflater.inflate(R.layout.fragment_maps, container, false)
         searchView = view.findViewById(R.id.idSearchView)
         UserModel.instance.getAllUsers().observe(viewLifecycleOwner) { users = it }
@@ -65,6 +72,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         // adding on query listener for our search view.
+//        currentMap = googleMap
         searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false
@@ -97,7 +105,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         if (note.isDeleted) return
         val coordinate = LatLng(note.position.latitude, note.position.longitude)
         val marker = googleMap.addMarker(MarkerOptions().position(coordinate))
-        if (marker != null) allMarkersMap[marker] = note.userId
+        if (marker != null)
+        {
+            allMarkersMap[marker] = note.userId
+        }
         marker!!.tag = note.id
         marker.setIcon(BitmapDescriptorFactory.fromBitmap(createNoteMarkerBitmap()))
         googleMap.setOnMarkerClickListener {
@@ -107,6 +118,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             true
         }
         mapMarkers.add(marker)
+
     }
 
     private fun createNoteMarkerBitmap(): Bitmap {
@@ -117,5 +129,18 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         return Bitmap.createScaledBitmap(b, width, height, false)
     }
 
+    override fun onDestroyView() {
+//        allMarkersMap.forEach{(key,value)->
+//            key.remove()
+//        }
+        for (i in mapMarkers.indices)
+        {
+            if(mapMarkers[i] != null){
+                mapMarkers[i]?.remove()
 
+            }
+        }
+//        currentMap.clear()
+        super.onDestroyView()
+    }
 }

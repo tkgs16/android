@@ -112,12 +112,17 @@ class ViewNoteFragment : Fragment() {
             progressBar.visibility = View.VISIBLE
             detailedNote.let {
                 NoteModel.instance.deleteNote(it) {
-                    findNavController().popBackStack()
+//                    findNavController().navigate(ViewNoteFragmentDirections.actionViewNoteFragmentToMyNotesFragment())
+//                    findNavController().navigate(ViewNoteFragmentDirections.actionViewNoteFragmentToNavHome())
+//                    findNavController().popBackStack()
+//                    Thread.sleep(500)
+                    findNavController().navigate(ViewNoteFragmentDirections.actionViewNoteFragmentToMapsFragment())
                 }
             }
         }
 
         return view
     }
+
 
 }

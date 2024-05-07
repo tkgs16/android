@@ -8,6 +8,8 @@ import com.example.advizors.models.AppLocalDatabase
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import java.util.concurrent.Executors
+import kotlinx.coroutines.*
+
 
 class NoteModel private constructor() {
 
@@ -83,6 +85,7 @@ class NoteModel private constructor() {
     fun deleteNote(note: Note, callback: () -> Unit) {
         firebaseModel.deleteNote(note) {
             refreshNotes()
+//            Thread.sleep(2000)
             callback()
         }
     }
