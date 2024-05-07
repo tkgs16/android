@@ -10,7 +10,6 @@ class LogoutActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_logout)
 
-        // Add the fragment to the activity
         supportFragmentManager.beginTransaction()
             .replace(R.id.logoutContainerView, LogoutFragment())
             .commit()

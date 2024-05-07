@@ -1,7 +1,6 @@
 package com.example.advizors
 
 
-import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log

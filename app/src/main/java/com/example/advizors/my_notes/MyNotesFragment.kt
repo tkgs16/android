@@ -1,5 +1,4 @@
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,10 +39,8 @@ class MyNotesFragment : Fragment(), NoteAdapter.OnNoteClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize ViewModel
         noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
 
-        // Observe notes for the current user
         noteViewModel.getMyNotes().observe(viewLifecycleOwner, Observer { notes ->
             notes?.let {
                 updateNotesList(it)

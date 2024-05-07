@@ -34,7 +34,6 @@ class NoteAdapter(private var notes: List<Note>, private val listener: OnNoteCli
         private val imageViewNote: ImageView = itemView.findViewById(R.id.imageViewNote)
 
         init {
-            // Set click listener here
             itemView.setOnClickListener(this)
         }
 
@@ -62,7 +61,6 @@ class NoteAdapter(private var notes: List<Note>, private val listener: OnNoteCli
         }
     }
 
-    // Interface for click listener
     interface OnNoteClickListener {
         fun onNoteClicked(noteId: String)
     }
