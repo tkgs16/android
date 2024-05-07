@@ -1,7 +1,6 @@
 package com.example.advizors
 
 
-import android.location.Geocoder
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
@@ -27,10 +26,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import com.example.advizors.AddNoteFragmentArgs
-
 import com.squareup.picasso.Picasso
-import java.util.Locale
 import java.util.UUID
 
 class AddNoteFragment : Fragment() {
@@ -39,8 +35,6 @@ class AddNoteFragment : Fragment() {
     private lateinit var spinner: ProgressBar
     private lateinit var attachPictureButton: ImageButton
     private lateinit var submitButton: MaterialButton
-    private lateinit var deviceLocation: Location
-    private lateinit var countryCode: String
     private var attachedPicture: Uri = Uri.EMPTY
     private var imageView: ImageView? = null
     private val auth = Firebase.auth
@@ -88,9 +82,7 @@ class AddNoteFragment : Fragment() {
     }
 
     private fun handleSubmitButton() {
-        submitButton.setOnClickListener {
-            createNewNote()
-        }
+        submitButton.setOnClickListener { createNewNote() }
     }
 
     private fun showDialogResponse(message: String) {
@@ -165,8 +157,6 @@ class AddNoteFragment : Fragment() {
         }
 
     private fun handleAttachProductPicture() {
-        attachPictureButton.setOnClickListener {
-            pickImageContract.launch("image/*")
-        }
+        attachPictureButton.setOnClickListener { pickImageContract.launch("image/*") }
     }
 }

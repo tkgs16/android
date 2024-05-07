@@ -1,20 +1,15 @@
 package com.example.advizors.maps
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.example.advizors.R
 import com.example.advizors.models.note.Note
 import com.example.advizors.models.note.NoteModel
@@ -28,26 +23,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import java.util.Locale
 
 
 class MapsFragment : Fragment(), OnMapReadyCallback {
-    private var viewModel: MapsViewModel? = null
     private lateinit var view: View
     private var searchView: SearchView? = null
     private var mapMarkers: MutableList<Marker?> = ArrayList()
     private lateinit var users: MutableList<User>
     private val allMarkersMap: HashMap<Marker, String> = HashMap()
     private val mapsViewModel by activityViewModels<MapsViewModel>()
-
-
-
-    fun displaySelectedMarkers(filterString: String) {
-        val userId = users.firstOrNull { it.firstName.lowercase() == filterString.lowercase() }?.id
-        mapMarkers.forEach {
-            it!!.isVisible = if (userId == null) true else allMarkersMap[it] == userId
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -85,10 +69,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         }
 
         location?.let {
-            val cameraUpdate = CameraUpdateFactory.newLatLng(
-                it
+            googleMap.moveCamera(
+                CameraUpdateFactory.newLatLng(
+                    it
+                )
             )
-            googleMap.moveCamera(cameraUpdate)
         }
         googleMap.setOnMapLongClickListener { latLng: LatLng ->
             Navigation.findNavController(view).navigate(
@@ -98,8 +83,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             )
         }
 
-        val notes = NoteModel.instance.getAllNotes()
-        notes.observe(viewLifecycleOwner) { notesList ->
+        NoteModel.instance.getAllNotes().observe(viewLifecycleOwner) { notesList ->
             notesList.forEach { addMarkerToMap(it, googleMap) }
         }
     }
@@ -118,6 +102,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             true
         }
         mapMarkers.add(marker)
+    }
+    fun displaySelectedMarkers(filterString: String) {
+        val userId = users.firstOrNull { it.firstName.lowercase() == filterString.lowercase() }?.id
+        mapMarkers.forEach {
+            it!!.isVisible = if (userId == null) true else allMarkersMap[it] == userId
+        }
     }
 
     private fun createNoteMarkerBitmap(): Bitmap {
