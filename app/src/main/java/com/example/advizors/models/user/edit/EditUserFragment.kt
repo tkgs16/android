@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -40,6 +41,8 @@ class EditUserFragment : Fragment() {
     private lateinit var lastNameInputLayout: TextInputLayout
     private lateinit var lastNameEditText: TextInputEditText
 
+    private lateinit var progressBar: ProgressBar
+
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -48,6 +51,8 @@ class EditUserFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_edit_user, container, false)
+
+        progressBar = view.findViewById(R.id.editProgressBar)
 
         firstNameInputLayout = view.findViewById(R.id.layoutEditFirstName)
         lastNameInputLayout = view.findViewById(R.id.layoutEditLastName)
@@ -60,6 +65,8 @@ class EditUserFragment : Fragment() {
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        progressBar.visibility = View.INVISIBLE
 
         defineImageSelectionCallBack()
         populateUserInformation()
@@ -92,6 +99,8 @@ class EditUserFragment : Fragment() {
             if (isValidUser) {
                 if (user != null) {
                     auth.updateCurrentUser(user).addOnSuccessListener {
+                        progressBar.visibility = View.VISIBLE
+
                         val profileUpdatesBuilder = UserProfileChangeRequest.Builder()
                             .setDisplayName("$newFirstName $newLastName")
 
