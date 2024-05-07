@@ -92,7 +92,6 @@ class LoginActivity : AppCompatActivity() {
         email: String,
         password: String
     ): Boolean {
-        // Basic checks
         if (email.isEmpty()) {
             emailAddressInputLayout.error = "Email cannot be empty"
             return false

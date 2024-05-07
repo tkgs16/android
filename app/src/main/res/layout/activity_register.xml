@@ -87,7 +87,6 @@
             android:hint="Password*"
             app:endIconMode="clear_text"
             app:errorEnabled="true">
-            <!--        app:startIconDrawable="@drawable/lock"-->
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextPassword"
@@ -105,7 +104,6 @@
             android:hint="Confirm Password*"
             app:endIconMode="clear_text"
             app:errorEnabled="true">
-            <!--        app:startIconDrawable="@drawable/lock"-->
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextConfirmPassword"
