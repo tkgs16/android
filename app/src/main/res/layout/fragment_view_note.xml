@@ -13,11 +13,17 @@
         android:layout_row="0"
         android:layout_column="0"
         android:layout_centerInParent="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="7dp"
         android:layout_marginBottom="629dp"
         android:indeterminateDrawable="@drawable/progress_background"
         app:layout_constraintBottom_toTopOf="@+id/details_delete_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/user_name_tv"
+        app:layout_constraintHorizontal_bias="0.39"
+        app:layout_constraintStart_toStartOf="@+id/user_name_tv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/user_name_tv"
@@ -29,8 +35,10 @@
         android:textColor="@color/black"
         android:textSize="24dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/create_note_progress" />
+
     <TextView
         android:id="@+id/details_content_tv"
         android:layout_width="0dp"
