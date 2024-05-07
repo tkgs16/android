@@ -15,7 +15,7 @@
             android:title="@string/my_notes" />
         <item
             android:id="@+id/editUserFragment"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/update_user"
             android:title="@string/details" />
 
     </group>

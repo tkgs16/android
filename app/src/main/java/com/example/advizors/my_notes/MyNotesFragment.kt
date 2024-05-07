@@ -41,7 +41,7 @@ class MyNotesFragment : Fragment(), NoteAdapter.OnNoteClickListener {
 
         noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
 
-        noteViewModel.getMyNotes().observe(viewLifecycleOwner, Observer { notes ->
+         noteViewModel.getMyNotes().observe(viewLifecycleOwner, Observer { notes ->
             notes?.let {
                 updateNotesList(it)
                 spinner.visibility = View.INVISIBLE
