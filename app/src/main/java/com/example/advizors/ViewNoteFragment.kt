@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -112,7 +113,13 @@ class ViewNoteFragment : Fragment() {
             progressBar.visibility = View.VISIBLE
             detailedNote.let {
                 NoteModel.instance.deleteNote(it) {
-                    findNavController().popBackStack()
+//                    findNavController().popBackStack()
+                    var fm:FragmentManager = requireActivity().supportFragmentManager
+                    val fragmentTransaction = fm.beginTransaction()
+                    for(i in 0 until fm.backStackEntryCount) {
+                    fm.popBackStack();
+                }
+                    findNavController().navigate(ViewNoteFragmentDirections.actionViewNoteFragmentToNavDeleteUi())
                 }
             }
         }
