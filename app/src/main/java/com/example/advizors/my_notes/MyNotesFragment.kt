@@ -3,6 +3,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,7 @@ class MyNotesFragment : Fragment(), NoteAdapter.OnNoteClickListener {
 
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var noteAdapter: NoteAdapter
+    private lateinit var spinner: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,6 +27,8 @@ class MyNotesFragment : Fragment(), NoteAdapter.OnNoteClickListener {
         val view = inflater.inflate(R.layout.fragment_my_notes, container, false)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
+        spinner = view.findViewById(R.id.my_notes_spinner)
+        spinner.visibility = View.VISIBLE
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         noteAdapter = NoteAdapter(emptyList(), this) // Initially empty, will be updated later
         recyclerView.adapter = noteAdapter
@@ -42,6 +46,7 @@ class MyNotesFragment : Fragment(), NoteAdapter.OnNoteClickListener {
         noteViewModel.getMyNotes().observe(viewLifecycleOwner, Observer { notes ->
             notes?.let {
                 updateNotesList(it)
+                spinner.visibility = View.INVISIBLE
             }
         })
     }
