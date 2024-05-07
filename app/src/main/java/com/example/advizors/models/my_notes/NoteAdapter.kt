@@ -8,10 +8,12 @@ import com.example.advizors.data.note.Note
 import com.example.advizors.R
 import com.squareup.picasso.Picasso
 
-class NoteAdapter(private var notes: List<Note>, private val listener: OnNoteClickListener) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
+class NoteAdapter(private var notes: List<Note>, private val listener: OnNoteClickListener) :
+    RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_note, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.list_item_note, parent, false)
         return NoteViewHolder(view)
     }
 
@@ -29,7 +31,8 @@ class NoteAdapter(private var notes: List<Note>, private val listener: OnNoteCli
         notifyDataSetChanged()
     }
 
-    inner class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnClickListener {
         private val textViewContent: TextView = itemView.findViewById(R.id.textViewContent)
         private val imageViewNote: ImageView = itemView.findViewById(R.id.imageViewNote)
 
@@ -48,13 +51,9 @@ class NoteAdapter(private var notes: List<Note>, private val listener: OnNoteCli
         fun bind(note: Note) {
             textViewContent.text = note.content
 
-            note.imageUrl?.let { imageUrl ->
+            note.imageUrl?.let {
                 imageViewNote.visibility = View.VISIBLE
-                Picasso.get()
-                    .load(imageUrl)
-                    .fit()
-                    .centerCrop()
-                    .into(imageViewNote)
+                Picasso.get().load(it).fit().centerCrop().into(imageViewNote)
             } ?: run {
                 imageViewNote.visibility = View.GONE
             }

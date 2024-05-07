@@ -2,22 +2,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.advizors.R
 import com.example.advizors.data.note.Note
 import com.example.advizors.models.my_notes.NoteViewModel
-import com.example.advizors.R
-import androidx.navigation.fragment.findNavController
 
 class MyNotesFragment : Fragment(), NoteAdapter.OnNoteClickListener {
 
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var noteAdapter: NoteAdapter
-    private lateinit var spinner: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,10 +24,8 @@ class MyNotesFragment : Fragment(), NoteAdapter.OnNoteClickListener {
         val view = inflater.inflate(R.layout.fragment_my_notes, container, false)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-        spinner = view.findViewById(R.id.my_notes_spinner)
-        spinner.visibility = View.VISIBLE
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        noteAdapter = NoteAdapter(emptyList(), this) // Initially empty, will be updated later
+        noteAdapter = NoteAdapter(emptyList(), this)
         recyclerView.adapter = noteAdapter
 
         return view
@@ -39,19 +34,14 @@ class MyNotesFragment : Fragment(), NoteAdapter.OnNoteClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
+        noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
 
-         noteViewModel.getMyNotes().observe(viewLifecycleOwner, Observer { notes ->
-            notes?.let {
-                updateNotesList(it)
-                spinner.visibility = View.INVISIBLE
-            }
-        })
+         noteViewModel.getMyNotes().observe(viewLifecycleOwner) {
+             it?.let { updateNotesList(it) }
+         }
     }
 
-    private fun updateNotesList(notes: List<Note>) {
-        noteAdapter.updateNotes(notes)
-    }
+    private fun updateNotesList(notes: List<Note>) { noteAdapter.updateNotes(notes) }
 
     override fun onNoteClicked(noteId: String) {
         findNavController().navigate(MyNotesFragmentDirections.actionMyNotesFragmentToViewNoteFragment(noteId))

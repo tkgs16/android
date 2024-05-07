@@ -62,7 +62,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         })
         val location = mapsViewModel.location.value?.let {
             LatLng(
-                mapsViewModel.location.value!!.latitude,
+                it.latitude,
                 it.longitude
             )
         }

@@ -115,7 +115,6 @@ class EditUserFragment : Fragment() {
                                 "Register Successful",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            //TODO refactor main activity
                             val intent = Intent(requireContext(), MainActivity::class.java)
                             startActivity(intent)
                             requireActivity().finish()
@@ -134,7 +133,7 @@ class EditUserFragment : Fragment() {
 
     private fun validateField(isValid: Boolean, layout: TextInputLayout, error: String): Boolean {
         if (!isValid) {
-            layout.error = error;
+            layout.error = error
             return false
         }
         layout.error = null
