@@ -1,29 +1,32 @@
-package com.example.advizors.maps
+package com.example.advizors
 
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigation
-import com.example.advizors.R
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.example.advizors.models.AppLocalDatabase
 import com.example.advizors.models.note.Note
 import com.example.advizors.models.note.NoteModel
+import com.example.advizors.models.note.SerializableLatLng
 import com.example.advizors.models.user.User
 import com.example.advizors.models.user.UserModel
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
-
+import com.google.firebase.Firebase
+import com.google.firebase.auth.UserInfo
+import com.google.firebase.auth.auth
+import com.squareup.picasso.Picasso
+import java.lang.Exception
 
 /**
  * A simple [Fragment] subclass.

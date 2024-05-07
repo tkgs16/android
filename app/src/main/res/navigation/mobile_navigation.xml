@@ -24,7 +24,7 @@
     <fragment
         android:id="@+id/mapsFragment"
         android:name="com.example.advizors.maps.MapsFragment"
-        android:label="MapsFragment">
+        android:label="@string/map">
         <action
             android:id="@+id/action_mapsFragment_to_addNoteFragment"
             app:destination="@id/addNoteFragment" />
@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/addNoteFragment"
         android:name="com.example.advizors.AddNoteFragment"
-        android:label="AddNoteFragment">
+        android:label="Add note">
     <argument
         android:name="latitude"
         app:argType="float" />
@@ -62,7 +62,7 @@
     <fragment
         android:id="@+id/viewNoteFragment"
         android:name="com.example.advizors.ViewNoteFragment"
-        android:label="ViewNoteFragment" >
+        android:label="View note" >
         <action
             android:id="@+id/action_viewNoteFragment_to_addNoteFragment"
             app:destination="@id/addNoteFragment" />
@@ -78,11 +78,11 @@
     <fragment
         android:id="@+id/logoutFragment"
         android:name="com.example.advizors.login.LogoutFragment"
-        android:label="LogoutFragment" />
+        android:label="Logout" />
     <fragment
         android:id="@+id/myNotesFragment"
         android:name="MyNotesFragment"
-        android:label="MyNotesFragment" >
+        android:label="My notes" >
         <action
             android:id="@+id/action_myNotesFragment_to_viewNoteFragment"
             app:destination="@id/viewNoteFragment" />
@@ -90,5 +90,5 @@
     <fragment
         android:id="@+id/editUserFragment"
         android:name="com.example.advizors.register.EditUserFragment"
-        android:label="EditUserFragment" />
+        android:label="Edit user" />
 </navigation>
