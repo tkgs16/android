@@ -32,6 +32,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var users: MutableList<User>
     private val allMarkersMap: HashMap<Marker, String> = HashMap()
     private val mapsViewModel by activityViewModels<MapsViewModel>()
+    val location = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -60,13 +61,13 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 return false
             }
         })
+
         val location = mapsViewModel.location.value?.let {
             LatLng(
                 mapsViewModel.location.value!!.latitude,
                 it.longitude
             )
         }
-
         location?.let {
             googleMap.moveCamera(
                 CameraUpdateFactory.newLatLng(
@@ -85,6 +86,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         NoteModel.instance.getAllNotes().observe(viewLifecycleOwner) { notesList ->
             notesList.forEach { addMarkerToMap(it, googleMap) }
         }
+
     }
 
     private fun addMarkerToMap(note: Note, googleMap: GoogleMap) {
