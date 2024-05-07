@@ -3,7 +3,9 @@ package com.example.advizors.models.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
+import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -22,9 +24,16 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var emailAddressEditText: TextInputEditText
     private lateinit var passwordInputLayout: TextInputLayout
     private lateinit var passwordEditText: TextInputEditText
+
+    private lateinit var progressBar: ProgressBar
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        progressBar = findViewById(R.id.loginProgressBar)
+        progressBar.visibility = View.INVISIBLE
 
         if (auth.currentUser != null) {
             loggedInHandler()
@@ -47,6 +56,7 @@ class LoginActivity : AppCompatActivity() {
 
             if (syntaxChecksResult) {
                 auth.signInWithEmailAndPassword(email, password).addOnSuccessListener {
+                    progressBar.visibility = View.VISIBLE
                     loggedInHandler()
                 }.addOnFailureListener {
                     Toast.makeText(

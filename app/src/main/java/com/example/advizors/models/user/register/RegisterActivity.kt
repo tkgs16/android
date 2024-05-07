@@ -7,8 +7,10 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Patterns
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -41,6 +43,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var passwordEditText: TextInputEditText
     private lateinit var confirmPasswordInputLayout: TextInputLayout
     private lateinit var confirmPasswordEditText: TextInputEditText
+    private lateinit var progressBar: ProgressBar
     private val auth = Firebase.auth
 
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
@@ -48,6 +51,9 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+
+        progressBar = findViewById(R.id.registerProgressBar)
+        progressBar.visibility = View.INVISIBLE
 
         defineImageSelectionCallBack()
         openGallery()
@@ -79,6 +85,7 @@ class RegisterActivity : AppCompatActivity() {
 
             if (isValidUser) {
                 auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
+                    progressBar.visibility = View.VISIBLE
                     val authenticatedUser = it.user!!
 
                     val profileUpdates = UserProfileChangeRequest.Builder()
