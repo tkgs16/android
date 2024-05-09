@@ -50,6 +50,39 @@
         app:layout_constraintStart_toStartOf="@id/user_name_tv"
         app:layout_constraintTop_toTopOf="@+id/user_name_tv" />
 
+    <TextView
+        android:id="@+id/country_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="@id/details_content_tv"
+        app:layout_constraintStart_toStartOf="@id/details_content_tv"
+        app:layout_constraintTop_toTopOf="@id/details_content_tv" />
+
+    <TextView
+        android:id="@+id/city_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="@id/country_tv"
+        app:layout_constraintStart_toStartOf="@id/country_tv"
+        app:layout_constraintTop_toTopOf="@id/country_tv" />
+
+    <TextView
+        android:id="@+id/street_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="@id/street_tv"
+        app:layout_constraintStart_toStartOf="@id/street_tv"
+        app:layout_constraintTop_toTopOf="@id/street_tv" />
+
     <ImageView
         android:id="@+id/details_image"
         android:layout_width="0dp"
