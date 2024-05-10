@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp">
@@ -12,20 +12,30 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="40dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/note_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="top|start"
-            android:hint="content"
+            android:hint="Content"
             android:inputType="textMultiLine"
             android:lines="4"
             android:maxLines="10"
             android:minLines="4" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageButton
+        android:id="@+id/upload_picture_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="336dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="upload picture"
+        android:paddingTop="8dp"
+        android:src="@android:drawable/ic_menu_camera" />
 
     <ImageView
         android:id="@+id/selected_image"
@@ -41,31 +51,16 @@
         android:layout_row="0"
         android:layout_column="0"
         android:layout_centerInParent="true"
+        android:indeterminateDrawable="@drawable/progress_background"
         android:visibility="visible" />
 
-    <LinearLayout
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/note_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal">
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="submit" />
 
-        <ImageButton
-            android:id="@+id/upload_picture_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="upload picture"
-            android:src="@android:drawable/ic_menu_camera" />
-
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/note_submit"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:text="submit" />
-
-    </LinearLayout>
 
 </LinearLayout>

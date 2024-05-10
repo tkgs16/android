@@ -9,7 +9,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="20dp" />
+        android:layout_height="90dp" />
 
     <TextView
         android:id="@+id/TitleTextView"
@@ -79,16 +79,12 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="20dp" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="131dp" />
+        android:layout_height="100dp" />
 
     <Button
         android:id="@+id/SignInButton"
         style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="372dp"
+        android:layout_width="371dp"
         android:layout_height="wrap_content"
         android:text="Sign up" />
 

@@ -15,6 +15,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
+        android:layout_marginTop="30dp"
         android:src="@drawable/profile_pic_placeholder" />
 
     <Button
