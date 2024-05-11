@@ -84,7 +84,7 @@
     <Button
         android:id="@+id/SignInButton"
         style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="371dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sign up" />
 
